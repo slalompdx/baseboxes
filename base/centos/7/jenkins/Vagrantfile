@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "bento/centos-7.1"
+  config.vm.box = "slalompdx/centos-7.1-puppet-ruby"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -67,15 +67,14 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-#  config.ssh.insert_key = false
-#  config.vm.provision "shell", path: '../../../../scripts/common/vagrant_insecure_key.sh'
+  #config.ssh.insert_key = false
   config.ssh.username = 'vagrant'
   config.ssh.password = 'vagrant'
-  config.vm.provision "shell", path: '../../../../scripts/centos/7/puppet.sh'
+  config.vm.provision "shell", path: "../../../../scripts/centos/jenkins_prereq.sh"
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = 'ext'
+    puppet.manifest_file = 'jenkins.pp'
+  end
   config.vm.provision "shell", path: '../../../../scripts/centos/cleanup.sh'
   config.vm.provision "shell", path: '../../../../scripts/common/minimize.sh'
-
-  config.push.define 'atlas' do |push|
-    push.app = 'slalompdx/centos-7.1-puppet'
-  end
 end
