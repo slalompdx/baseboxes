@@ -82,7 +82,4 @@
 
     'rebuild'
   ]: }
-  jenkins::job { 'seed':
-    config => template('/vagrant/ext/seed.xml.erb')
-  }
-
+}
