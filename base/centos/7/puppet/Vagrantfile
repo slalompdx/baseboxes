@@ -67,8 +67,10 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  config.ssh.insert_key = false
-  config.vm.provision "shell", path: '../../../../scripts/common/vagrant_insecure_key.sh'
+#  config.ssh.insert_key = false
+#  config.vm.provision "shell", path: '../../../../scripts/common/vagrant_insecure_key.sh'
+  config.ssh.username = 'vagrant'
+  config.ssh.password = 'vagrant'
   config.vm.provision "shell", path: '../../../../scripts/centos/7/puppet.sh'
   config.vm.provision "shell", path: '../../../../scripts/centos/cleanup.sh'
   config.vm.provision "shell", path: '../../../../scripts/common/minimize.sh'

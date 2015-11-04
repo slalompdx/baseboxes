@@ -67,6 +67,8 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
+  config.ssh.insert_key = false
+  config.vm.provision "shell", path: '../../../../scripts/common/vagrant_insecure_key.sh'
   config.vm.provision "shell", path: "../../../../scripts/common/ruby_prereq.sh"
   config.vm.provision "puppet" do |puppet|
     puppet.manifests_path = 'ext'
