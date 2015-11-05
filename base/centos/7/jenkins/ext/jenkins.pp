@@ -1,23 +1,27 @@
-	include stdlib
+include stdlib
 
 class { '::rbenv': }
 rbenv::plugin { 'sstephenson/ruby-build': latest => true }
 rbenv::build { '2.0.0-p647': global => true }
 
-	$jenkins_config = {
-		'JENKINS_JAVA_OPTIONS' => { 'value' => '-Djava.awt.headless=true -XX:MaxPermSize=512m' },
-	}
+$jenkins_config = {
+  'JENKINS_JAVA_OPTIONS' => { 'value' => '-Djava.awt.headless=true -XX:MaxPermSize=512m' },
+}
 
 class { '::firewall':
   ensure => stopped,
 }
 
-	class { '::jenkins':
-		repo               => false,
+class { '::java':
+  package => 'java-1.8.0-openjdk',
+}
+class { '::jenkins':
+  repo               => false,
   executors          => 8,
-		config_hash        => $jenkins_config,
+	config_hash        => $jenkins_config,
   configure_firewall => true,
-	}
+  install_java       => false,
+}
 yumrepo {'jenkins':
   descr    => 'Jenkins',
   baseurl  => 'http://pkg.jenkins-ci.org/redhat/',
