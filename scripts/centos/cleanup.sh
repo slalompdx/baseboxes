@@ -11,7 +11,7 @@ fi
 
 
 # Remove development and kernel source packages
-yum -y remove gcc cpp kernel-devel kernel-headers perl;
+yum -y remove gcc cpp kernel-devel kernel-headers;
 
 if [ "$distro" != 'red hat' ]; then
   yum -y clean all;
