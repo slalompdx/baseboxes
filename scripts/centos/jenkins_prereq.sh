@@ -1,5 +1,5 @@
 #!/bin/sh
 
-sudo puppet module install rtyler-jenkins
-sudo puppet module install puppetlabs-firewall
-sudo puppet module install puppetlabs-java
+puppet module install rtyler-jenkins
+puppet module install puppetlabs-firewall
+puppet module install puppetlabs-java
