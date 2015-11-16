@@ -36,6 +36,8 @@
     {
       "environment_vars": [
         "HOME_DIR=/home/vagrant",
+        "HTTP_PROXY={{user `http_proxy`}}",
+        "HTTPS_PROXY={{user `https_proxy`}}",
         "http_proxy={{user `http_proxy`}}",
         "https_proxy={{user `https_proxy`}}",
         "no_proxy={{user `no_proxy`}}"
