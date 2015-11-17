@@ -44,7 +44,6 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
-        "scripts/common/proxy.sh",
         "scripts/centos/7/puppet.sh",
         "scripts/centos/7/tools.sh",
         "scripts/centos/cleanup.sh",

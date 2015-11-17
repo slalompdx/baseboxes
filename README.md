@@ -1,0 +1,1 @@
+I've recently removed proxy configs moved them to passthrough env vars. Call packer with -var and then http_proxy and https_proxy (and their capitalized counterparts if you like) to build boxes with proxies.
