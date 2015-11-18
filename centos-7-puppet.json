@@ -29,7 +29,6 @@
       "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
       "type": "vagrant",
       "keep_input_artifact": true
-
     }
   ],
   "provisioners": [
