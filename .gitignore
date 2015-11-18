@@ -3,3 +3,4 @@
 *.box
 packer-centos-7.1-*/
 *.swp
+fixtures/
