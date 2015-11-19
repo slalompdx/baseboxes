@@ -39,6 +39,18 @@ task :build_base do
   stream_output command
 end
 
+desc 'Clean centos base - Default for clean_iso is false'
+task :clean_base, :clean_iso do |task, args|
+  puts "Cleaning CentOS base image"
+  clean_iso = args[:clean_iso] || 'false'
+  stream_output "rm -rf fixtures/bento/packer-centos-7.1-x86_64-virtualbox"
+  stream_output "rm -rf fixtures/bento/builds"
+  unless clean_iso == 'false'
+    puts "Cleaning CentOS ISO"
+    stream_output "rm -rf fixtures/bento/packer_cache"
+  end
+end
+
 desc 'Build specified image'
 task :build_image, [:name] do |task, args|
   puts "Building image #{args[:name]}"
