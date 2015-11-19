@@ -1,6 +1,6 @@
 .vagrant
 .git
 *.box
-packer-centos-7.1-*/
+packer-centos-7-*/
 *.swp
 fixtures/

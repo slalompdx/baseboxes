@@ -52,15 +52,15 @@
     }
   ],
   "variables": {
-    "box_basename": "centos-7.1-puppet",
+    "box_basename": "centos-7-puppet",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "centos-7.1-puppet",
+    "name": "centos-7-puppet",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7.1-puppet",
+    "template": "centos-7-puppet",
     "version": "0.0.TIMESTAMP"
   }
 }
