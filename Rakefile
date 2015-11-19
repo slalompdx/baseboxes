@@ -58,7 +58,8 @@ task :build_image, [:name] do |task, args|
   command << "-var http_proxy=#{@http_proxy} " if @http_proxy
   command << "-var https_proxy=#{@https_proxy} " if @https_proxy
   command << "-only=virtualbox-ovf #{args[:name]}.json && "
-  command << "cd ../../"
+  command << "mv packer-centos-7.1-puppet-virtualbox/*.vmdk packer-centos-7.1-puppet-virtualbox/packer-virtualbox-ovf-disk1.vmdk && "
+  command << "mv packer-centos-7.1-puppet-virtualbox/*.ovf packer-centos-7.1-puppet-virtualbox/packer-virtualbox-ovf.ovf"
   puts command
   stream_output command
 end
