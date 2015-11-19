@@ -38,3 +38,15 @@ task :build_base do
   command << "cd ../../"
   stream_output command
 end
+
+desc 'Build specified image'
+task :build_image, [:name] do |task, args|
+  puts "Building image #{args[:name]}"
+  command = "packer build "
+  command << "-var http_proxy=#{@http_proxy} " if @http_proxy
+  command << "-var https_proxy=#{@https_proxy} " if @https_proxy
+  command << "-only=virtualbox-ovf #{args[:name]}.json && "
+  command << "cd ../../"
+  puts command
+  stream_output command
+end
