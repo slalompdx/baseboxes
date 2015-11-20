@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "virtualbox-ovf",
-      "source_path": "../bento/packer-centos-7.1-x86_64-virtualbox/centos-7.1-x86_64.ovf",
+      "source_path": "./fixtures/bento/packer-centos-7.1-x86_64-virtualbox/centos-7.1-x86_64.ovf",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
@@ -53,15 +53,15 @@
     }
   ],
   "variables": {
-    "box_basename": "centos-7.1-puppet4",
+    "box_basename": "centos-7-puppet4",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "centos-7.1-puppet4",
+    "name": "centos-7-puppet4",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7.1-puppet4",
+    "template": "centos-7-puppet4",
     "version": "0.0.TIMESTAMP"
   }
 }
