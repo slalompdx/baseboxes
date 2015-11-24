@@ -14,6 +14,11 @@ file 'fixtures' do
   mkdir 'fixtures'
 end
 
+desc 'Ensure artifacts directory'
+file 'artifacts' do
+  mkdir 'artifacts'
+end
+
 desc 'Download and build Slalom Bento fork'
 task :prep_bento do
   Rake::Task['download_bento'].invoke
@@ -33,6 +38,8 @@ task :build_base, :version do |task, args|
   if version == 'both' or version == '6'
     puts "Building CentOS base from bento fork..."
     command = "cd fixtures/bento && "
+    command << "git checkout master && "
+    command << "git reset --hard HEAD && "
     command << "packer build "
     command << "-var http_proxy=#{@http_proxy} " if @http_proxy
     command << "-var https_proxy=#{@https_proxy} " if @https_proxy
@@ -43,6 +50,8 @@ task :build_base, :version do |task, args|
   if version == 'both' or version == '7'
     puts "Building CentOS base from bento fork..."
     command = "cd fixtures/bento && "
+    command << "git checkout master && "
+    command << "git reset --hard HEAD && "
     command << "packer build "
     command << "-var http_proxy=#{@http_proxy} " if @http_proxy
     command << "-var https_proxy=#{@https_proxy} " if @https_proxy
@@ -50,6 +59,15 @@ task :build_base, :version do |task, args|
     command << "cd ../../"
     stream_output command
   end
+end
+
+desc 'Preserve artifacts'
+task :preserve_artifacts do
+  puts "Preserving artifacts"
+  Rake::Task['artifacts'].invoke
+  stream_output "cp -r builds/ artifacts/builds"
+  stream_output "cp -r packer-centos* artifacts/"
+  stream_output "cp -r fixtures/bento/packer-centos* artifacts/"
 end
 
 desc 'Clean centos base - Default for clean_iso is false'

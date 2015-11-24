@@ -5,3 +5,4 @@ packer-centos-7-*/
 *.swp
 fixtures/
 Vagrantfile
+artifacts/*
