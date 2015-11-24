@@ -27,16 +27,29 @@ task :download_bento do
   stream_output "cd fixtures && git clone https://github.com/slalompdx/bento.git && cd .."
 end
 
-desc 'Build centos base'
-task :build_base do
-  puts "Building CentOS base from bento fork..."
-  command = "cd fixtures/bento && "
-  command << "packer build "
-  command << "-var http_proxy=#{@http_proxy} " if @http_proxy
-  command << "-var https_proxy=#{@https_proxy} " if @https_proxy
-  command << "-only=virtualbox-iso centos-7.1-x86_64.json && "
-  command << "cd ../../"
-  stream_output command
+desc 'Build centos base - Default for version is both, use both, 6 or 7'
+task :build_base, :version do |task, args|
+  version = args[:version] || 'both'
+  if version == 'both' or version == '6'
+    puts "Building CentOS base from bento fork..."
+    command = "cd fixtures/bento && "
+    command << "packer build "
+    command << "-var http_proxy=#{@http_proxy} " if @http_proxy
+    command << "-var https_proxy=#{@https_proxy} " if @https_proxy
+    command << "-only=virtualbox-iso centos-6.7-x86_64.json && "
+    command << "cd ../../"
+    stream_output command
+  end
+  if version == 'both' or version == '7'
+    puts "Building CentOS base from bento fork..."
+    command = "cd fixtures/bento && "
+    command << "packer build "
+    command << "-var http_proxy=#{@http_proxy} " if @http_proxy
+    command << "-var https_proxy=#{@https_proxy} " if @https_proxy
+    command << "-only=virtualbox-iso centos-7.1-x86_64.json && "
+    command << "cd ../../"
+    stream_output command
+  end
 end
 
 desc 'Clean centos base - Default for clean_iso is false'
