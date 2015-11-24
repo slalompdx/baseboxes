@@ -44,8 +44,8 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
-        "scripts/centos/7/puppet.sh",
-        "scripts/centos/tools.sh",
+        "scripts/centos/networking.sh",
+        "scripts/centos/7/ruby-nopuppet.sh",
         "scripts/centos/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
@@ -53,15 +53,15 @@
     }
   ],
   "variables": {
-    "box_basename": "centos-7-puppet4",
+    "box_basename": "centos-7-ruby",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "centos-7-puppet4",
+    "name": "centos-7-ruby",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7-puppet4",
+    "template": "centos-7-ruby",
     "version": "0.0.TIMESTAMP"
   }
 }
