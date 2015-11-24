@@ -70,6 +70,14 @@ task :preserve_artifacts do
   stream_output "cp -r fixtures/bento/packer-centos* artifacts/"
 end
 
+desc 'Clean all builds and bento images'
+task :clean do
+  puts "Cleaning builds and bento images"
+  stream_output "rm -rf builds/*"
+  stream_output "rm -rf packer-centos-6-*"
+  stream_output "rm -rf packer-centos-7-*"
+  Rake::Task['clean_base'].invoke
+end
 desc 'Clean centos base - Default for clean_iso is false'
 task :clean_base, :clean_iso do |task, args|
   puts "Cleaning CentOS base image"
@@ -84,7 +92,7 @@ task :clean_base, :clean_iso do |task, args|
 end
 
 desc 'Build specified image'
-task :build_image, [:name] do |task, args|
+task :build, [:name] do |task, args|
   puts "Building image #{args[:name]}"
   command = "packer build "
   command << "-var http_proxy=#{@http_proxy} " if @http_proxy
