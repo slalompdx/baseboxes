@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "virtualbox-ovf",
-      "source_path": "packer-centos-7-puppet-rbenv-virtualbox/packer-virtualbox-ovf.ovf",
+      "source_path": "packer-centos-7-puppet-virtualbox/packer-virtualbox-ovf.ovf",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
@@ -44,14 +44,15 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
-        "scripts/centos/jenkins_prereq.sh"
+        "scripts/centos/networking.sh",
+        "scripts/common/rbenv_prereq.sh"
       ],
       "type": "shell"
     },
     {
       "type": "puppet-masterless",
       "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}}{{if .Sudo}} sudo -E {{end}}puppet apply --verbose --detailed-exitcodes {{.ManifestFile}}",
-      "manifest_file": "puppet/jenkins/jenkins.pp"
+      "manifest_file": "puppet/ruby/rbenv.pp"
     },
     {
       "environment_vars": [
@@ -71,15 +72,15 @@
     }
   ],
   "variables": {
-    "box_basename": "centos-7-puppet-rbenv-jenkins",
+    "box_basename": "centos-7-puppet-rbenv",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "centos-7-puppet-rbenv-jenkins",
+    "name": "centos-7-puppet-rbenv",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7-puppet-rbenv-jenkins",
+    "template": "centos-7-puppet-rbenv",
     "version": "0.0.TIMESTAMP"
   }
 }

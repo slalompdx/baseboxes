@@ -1,4 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-puppet module install puppetlabs-stdlib
-puppet module install jdowning-rbenv
+puppet module install covermymeds-ruby

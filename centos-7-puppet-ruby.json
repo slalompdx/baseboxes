@@ -52,7 +52,7 @@
     {
       "type": "puppet-masterless",
       "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}}{{if .Sudo}} sudo -E {{end}}puppet apply --verbose --detailed-exitcodes {{.ManifestFile}}",
-      "manifest_file": "puppet/ruby/rbenv.pp"
+      "manifest_file": "puppet/ruby/ruby.pp"
     },
     {
       "environment_vars": [
