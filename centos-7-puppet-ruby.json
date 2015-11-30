@@ -51,7 +51,7 @@
     },
     {
       "type": "puppet-masterless",
-      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}}{{if .Sudo}} sudo -E {{end}}puppet apply --verbose --detailed-exitcodes {{.ManifestFile}}",
+      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}}{{if .Sudo}} sudo -E {{end}}http_proxy=http://proxy.standard.com:8080 https_proxy=http://proxy.standard.com:8080 puppet apply --verbose --detailed-exitcodes {{.ManifestFile}}",
       "manifest_file": "puppet/ruby/ruby.pp"
     },
     {
