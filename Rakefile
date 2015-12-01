@@ -29,11 +29,12 @@ desc 'Download Slalom Bento fork'
 task :download_bento do
   puts 'Downloading bento fork...'
   Rake::Task['fixtures'].invoke
-  stream_output 'cd fixtures && git clone https://github.com/slalompdx/bento.git && cd ..'
+  stream_output 'cd fixtures && ' \
+                'git clone https://github.com/slalompdx/bento.git && cd ..'
 end
 
 desc 'Build centos base - Default for version is both, use both, 6 or 7'
-task :build_base, :version do |task, args|
+task :build_base, :version do |_task, args|
   version = args[:version] || 'both'
   command_base = 'cd fixtures/bento && '
   command_base << 'git checkout master && '
@@ -41,14 +42,14 @@ task :build_base, :version do |task, args|
   command_base << 'packer build '
   command_base << "-var http_proxy=#{@http_proxy} " if @http_proxy
   command_base << "-var https_proxy=#{@https_proxy} " if @https_proxy
-  if version == 'both' or version == '6'
+  if version == 'both' || version == '6'
     puts 'Building CentOS base from bento fork...'
     command = command_base
     command << '-only=virtualbox-iso centos-6.7-x86_64.json && '
     command << 'cd ../../'
     stream_output command
   end
-  if version == 'both' or version == '7'
+  if version == 'both' || version == '7'
     puts 'Building CentOS base from bento fork...'
     command = command_base
     command << '-only=virtualbox-iso centos-7.1-x86_64.json && '
@@ -95,7 +96,8 @@ task :build, [:name] do |_task, args|
   command << "-var http_proxy=#{@http_proxy} " if @http_proxy
   command << "-var https_proxy=#{@https_proxy} " if @https_proxy
   command << "-only=virtualbox-ovf #{args[:name]}.json && "
-  command << "mv packer-#{args[:name]}-virtualbox/*.ovf packer-#{args[:name]}-virtualbox/packer-virtualbox-ovf.ovf"
+  command << "mv packer-#{args[:name]}-virtualbox/*.ovf " \
+    "packer-#{args[:name]}-virtualbox/packer-virtualbox-ovf.ovf"
   puts command
   stream_output command
 end
