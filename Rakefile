@@ -44,16 +44,18 @@ task :build_base, :version do |_task, args|
   command_base << "-var https_proxy=#{@https_proxy} " if @https_proxy
   if version == 'both' || version == '6'
     puts 'Building CentOS base from bento fork...'
-    command = command_base
+    command = command_base.dup
     command << '-only=virtualbox-iso centos-6.7-x86_64.json && '
     command << 'cd ../../'
+    puts command
     stream_output command
   end
   if version == 'both' || version == '7'
     puts 'Building CentOS base from bento fork...'
-    command = command_base
+    command = command_base.dup
     command << '-only=virtualbox-iso centos-7.1-x86_64.json && '
     command << 'cd ../../'
+    puts command
     stream_output command
   end
 end
