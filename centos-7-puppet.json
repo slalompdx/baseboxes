@@ -45,7 +45,7 @@
       "scripts": [
         "scripts/centos/7/puppet.sh",
         "scripts/centos/tools.sh",
-        "scripts/centos/cleanup.sh",
+        "scripts/centos/7/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"
