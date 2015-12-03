@@ -51,7 +51,7 @@
         "scripts/centos/networking.sh",
         "scripts/centos/6/ruby_prereq.sh",
         "scripts/centos/ruby.sh",
-        "scripts/centos/cleanup.sh",
+        "scripts/centos/6/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"
