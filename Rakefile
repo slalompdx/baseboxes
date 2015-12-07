@@ -15,10 +15,16 @@ def old_packer_command_builder(version = 7)
 end
 
 def new_packer_command_builder(args = {})
-  defaults = { format: 'iso', box: 'centos-7.1-x86_64' }
-  actual   = defaults.merge(args)
+  defaults = {
+    format: 'iso',
+    box: 'centos-7.1-x86_64',
+    force: ENV['force'] || false
+  }
+
+  actual = defaults.merge(args)
 
   command = ['packer build']
+  command << '--force' if actual[:force]
   command << "-var http_proxy=#{ENV['http_proxy']}" if ENV['http_proxy']
   command << "-var https_proxy=#{ENV['https_proxy']}" if ENV['https_proxy']
   command << "-only=virtualbox-#{actual[:format]}"
@@ -74,11 +80,13 @@ task :build_base, :version do |_task, args|
     system 'git checkout master'
     system 'git reset --hard HEAD'
 
-    stream_output build_packer_command(box: 'centos-7.1-x86_64') if
-      version.include? '7'
+    if version.include? '7'
+      stream_output build_packer_command(box: 'centos-7.1-x86_64', force: true)
+    end
 
-    stream_output build_packer_command(box: 'centos-6.7-x86_64') if
-      version.include? '6'
+    if version.include? '6'
+      stream_output build_packer_command(box: 'centos-6.7-x86_64', force: true)
+    end
   end
 end
 
