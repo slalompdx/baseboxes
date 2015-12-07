@@ -129,3 +129,10 @@ task :build, [:name] do |_task, args|
     "packer-#{args[:name]}-virtualbox/packer-virtualbox-ovf.ovf"
   stream_output command
 end
+
+desc 'List images'
+task :list do
+  Dir.glob('*.json') do |file|
+    puts file.split('.').first
+  end
+end
