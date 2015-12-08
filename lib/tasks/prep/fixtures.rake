@@ -7,7 +7,8 @@ namespace :prep do
       tasks.each do |task|
         FileUtils.mkdir_p(task)
         Dir.chdir(task) do
-          puts "vagrant init #{task} ."
+          puts "Writing Vagrantfile for #{task}..."
+          FileUtils.rm_rf('Vagrantfile')
           system "vagrant init #{task} ."
         end
       end
