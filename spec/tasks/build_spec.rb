@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'rake'
+require 'English'
 
 describe 'build task' do
   before :all do
@@ -23,11 +24,19 @@ describe 'build task' do
     it 'should produce an importable box artifact' do
       expect(File).to exist(
         "#{toplevel_dir}/builds/centos-6-puppet.virtualbox.box")
-      import_vm = capture_stdout { %x{"vagrant box add --force --name spec-centos-6-puppet #{toplevel_dir}/builds/centos-6-puppet.virtualbox.box"} }
-      expect($?.exitstatus).to eq(0)
+      capture_stdout { %x(vagrant box add --force --name spec-centos-6-puppet #{toplevel_dir}/builds/centos-6-puppet.virtualbox.box) }
+      expect($CHILD_STATUS.exitstatus).to eq(0)
     end
 
     it 'should be able to be instantiated' do
+      Dir.chdir("#{toplevel_dir}/fixtures/vagrant/centos-6-puppet") do
+        begin
+          %x(vagrant up --provider=virtualbox)
+          expect($CHILD_STATUS.exitstatus).to eq(0)
+        ensure
+          %x(vagrant destroy -f)
+        end
+      end
     end
   end
 end
