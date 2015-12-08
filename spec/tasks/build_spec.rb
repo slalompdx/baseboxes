@@ -14,9 +14,10 @@ describe 'build task' do
 
     it 'should build centos-6-puppet artifacts' do
       run_rake_task
-      expect(File).to be_directory('packer-centos-6-puppet-virtualbox')
+      expect(File).to be_directory(
+        "#{toplevel_dir}/packer-centos-6-puppet-virtualbox")
       expect(File).to exist(
-        'packer-centos-6-puppet-virtualbox/packer-virtuabox-ovf.ovf')
+        "#{toplevel_dir}/packer-centos-6-puppet-virtualbox/packer-virtualbox-ovf.ovf")
     end
   end
 end
