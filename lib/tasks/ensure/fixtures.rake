@@ -1,6 +1,6 @@
 namespace :ensure do
   desc 'Ensure fixtures directory'
-  file 'fixtures' do
-    mkdir 'fixtures'
+  task 'fixtures' do
+    FileUtils.mkdir_p 'fixtures/vagrant'
   end
 end

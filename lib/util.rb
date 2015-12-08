@@ -1,3 +1,5 @@
+require 'stringio'
+
 def stream_output(cmd)
   PTY.spawn(cmd) do |stdout, _stdin, _pid|
     begin
@@ -10,4 +12,19 @@ def stream_output(cmd)
   end
 rescue PTY::ChildExited
   puts 'The child process exited!'
+end
+
+def capture_stdout(&_block)
+  original_stdout = $stdout
+  $stdout = fake = StringIO.new
+  begin
+    yield
+  ensure
+    $stdout = original_stdout
+  end
+  fake.string
+end
+
+def toplevel_dir
+  `git rev-parse --show-toplevel`.chomp
 end

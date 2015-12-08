@@ -1,6 +1,6 @@
 namespace :ensure do
   desc 'Ensure artifacts directory'
-  file 'artifacts' do
-    mkdir 'artifacts'
+  task 'artifacts' do
+    FileUtils.mkdir_p 'artifacts'
   end
 end
