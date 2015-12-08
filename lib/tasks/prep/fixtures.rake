@@ -9,7 +9,7 @@ namespace :prep do
         Dir.chdir(task) do
           puts "Writing Vagrantfile for #{task}..."
           FileUtils.rm_rf('Vagrantfile')
-          system "vagrant init #{task} ."
+          system "vagrant init spec-#{task} ."
           puts "\n"
         end
       end
