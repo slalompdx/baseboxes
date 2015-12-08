@@ -10,6 +10,7 @@ namespace :prep do
           puts "Writing Vagrantfile for #{task}..."
           FileUtils.rm_rf('Vagrantfile')
           system "vagrant init #{task} ."
+          puts "\n"
         end
       end
     end
