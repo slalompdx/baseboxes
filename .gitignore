@@ -4,6 +4,6 @@
 packer-centos-6-*/
 packer-centos-7-*/
 *.swp
-fixtures/
 Vagrantfile
 artifacts/*
+ext/
