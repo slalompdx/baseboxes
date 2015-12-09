@@ -5,12 +5,18 @@ namespace :prep do
     Dir.chdir('serverspec') do
       tasks = capture_stdout { Rake::Task['list'].invoke }.split(/\n/)
       tasks.each do |task|
-        FileUtils.mkdir_p(task)
-        Dir.chdir(task) do
-          puts "Writing Vagrantfile for #{task}..."
-          FileUtils.rm_rf('Vagrantfile')
-          system "vagrant init spec-#{task} ."
-          puts "\n"
+        if Dir.exists?(task)
+          puts "Fixtures for #{task} already exist."
+        else
+          FileUtils.mkdir_p(task)
+          Dir.chdir(task) do
+            puts "Writing Vagrantfile for #{task}..."
+            FileUtils.rm_rf('Vagrantfile')
+            system "vagrant init spec-#{task} ."
+            puts "\n"
+            puts "Initializing serverspec for #{task}..."
+            system 'echo "1" | serverspec-init'
+          end
         end
       end
     end
