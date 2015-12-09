@@ -28,3 +28,8 @@ end
 def toplevel_dir
   `git rev-parse --show-toplevel`.chomp
 end
+
+def build_ssh_command(ssh_config)
+  "ssh -o StrictHostKeyChecking=no -i #{ssh_config['IdentityFile']} " \
+    "-p #{ssh_config['Port']} #{ssh_config['User']}@#{ssh_config['HostName']}"
+end

@@ -2,6 +2,14 @@ require 'spec_helper'
 require 'rake'
 require 'English'
 
+def build_ssh_config(workingdir)
+  Dir.chdir(workingdir) do
+    ssh_config = `vagrant ssh-config`.split(/\n/)
+    ssh_config.map! { |x| x.strip.split(/ /) }
+    ssh_config.to_h
+  end
+end
+
 describe 'build task' do
   before :all do
     Rake.application.rake_require 'tasks/build'
@@ -29,23 +37,34 @@ describe 'build task' do
     end
 
     describe 'centos-6-puppet box' do
+      workingdir = "#{toplevel_dir}/fixtures/vagrant/centos-6-puppet"
       before(:each) do
-        Dir.chdir("#{toplevel_dir}/fixtures/vagrant/centos-6-puppet")
+        Dir.chdir(workingdir)
       end
       after(:each) do
         Dir.chdir(toplevel_dir)
+      end
+      after(:all) do
+        Dir.chdir(workingdir) do
+          system 'vagrant destroy -f'
+        end
       end
 
       it 'should be able to be instantiated' do
         capture_stdout { %x(vagrant up --provider virtualbox) }
         expect($CHILD_STATUS.exitstatus).to be(0)
       end
+
       it 'should produce a working ssh configuration' do
-        ssh_config = `vagrant ssh-config`.split(/\n/)
-        ssh_config.map! { |x| x.strip.split(/ /) }
-        ssh_config = ssh_config.to_h
-        capture_stdout { %x(ssh -o StrictHostKeyChecking=no -i #{ssh_config['IdentityFile']} -p #{ssh_config['Port']} #{ssh_config['User']}@#{ssh_config['HostName']}i 'ls') }
+        capture_stdout { %x(#{build_ssh_command build_ssh_config(workingdir)} "ls") }
         expect($CHILD_STATUS.exitstatus).to be(0)
+      end
+
+      it 'should successfully pass serverspec' do
+        Dir.chdir("#{toplevel_dir}/serverspec/") do
+          run_serverspec = system "#{build_ssh_command build_ssh_config(workingdir)} 'cd /vagrant && bundle exec rake spec'"
+          expect(run_serverspec).to be true
+        end
       end
     end
   end
