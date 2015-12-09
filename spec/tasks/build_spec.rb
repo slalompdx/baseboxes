@@ -14,7 +14,7 @@ describe 'build task' do
     end
 
     it 'should build centos-6-puppet artifacts' do
-      #run_rake_task
+      run_rake_task
       expect(File).to be_directory(
         "#{toplevel_dir}/packer-centos-6-puppet-virtualbox")
       expect(File).to exist(
@@ -25,17 +25,27 @@ describe 'build task' do
       expect(File).to exist(
         "#{toplevel_dir}/builds/centos-6-puppet.virtualbox.box")
       capture_stdout { %x(vagrant box add --force --name spec-centos-6-puppet #{toplevel_dir}/builds/centos-6-puppet.virtualbox.box) }
-      expect($CHILD_STATUS.exitstatus).to eq(0)
+      expect($CHILD_STATUS.exitstatus).to be(0)
     end
 
-    it 'should be able to be instantiated' do
-      Dir.chdir("#{toplevel_dir}/fixtures/vagrant/centos-6-puppet") do
-        begin
-          %x(vagrant up --provider=virtualbox)
-          expect($CHILD_STATUS.exitstatus).to eq(0)
-        ensure
-          %x(vagrant destroy -f)
-        end
+    describe 'centos-6-puppet box' do
+      before(:each) do
+        Dir.chdir("#{toplevel_dir}/fixtures/vagrant/centos-6-puppet")
+      end
+      after(:each) do
+        Dir.chdir(toplevel_dir)
+      end
+
+      it 'should be able to be instantiated' do
+        capture_stdout { %x(vagrant up --provider virtualbox) }
+        expect($CHILD_STATUS.exitstatus).to be(0)
+      end
+      it 'should produce a working ssh configuration' do
+        ssh_config = `vagrant ssh-config`.split(/\n/)
+        ssh_config.map! { |x| x.strip.split(/ /) }
+        ssh_config = ssh_config.to_h
+        capture_stdout { %x(ssh -o StrictHostKeyChecking=no -i #{ssh_config['IdentityFile']} -p #{ssh_config['Port']} #{ssh_config['User']}@#{ssh_config['HostName']}i 'ls') }
+        expect($CHILD_STATUS.exitstatus).to be(0)
       end
     end
   end
