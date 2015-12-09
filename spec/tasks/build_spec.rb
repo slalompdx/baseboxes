@@ -62,7 +62,7 @@ describe 'build task' do
 
       it 'should successfully pass serverspec' do
         Dir.chdir("#{toplevel_dir}/serverspec/") do
-          run_serverspec = system "#{build_ssh_command build_ssh_config(workingdir)} 'cd /vagrant && bundle exec rake spec'"
+          run_serverspec = system "#{build_ssh_command build_ssh_config(workingdir)} 'cd /vagrant && ls && bundle install'"
           expect(run_serverspec).to be true
         end
       end
