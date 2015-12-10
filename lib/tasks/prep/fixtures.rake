@@ -15,7 +15,7 @@ namespace :prep do
             system "vagrant init spec-#{task} ."
             puts "\n"
             puts "Initializing serverspec for #{task}..."
-            system 'echo "1" | serverspec-init'
+            FileUtils.cp_r('../../fixtures/serverspec_skel/', '.')
           end
         end
       end
