@@ -10,6 +10,14 @@ def build_ssh_config(workingdir)
   end
 end
 
+def build_env_vars
+  vars = ""
+  vars << "http_proxy=#{ENV['http_proxy']} " if ENV['http_proxy']
+  vars << "https_proxy=#{ENV['https_proxy']} " if ENV['https_proxy']
+  vars << "no_proxy=#{ENV['no_proxy']} " if ENV['no_proxy']
+  vars
+end
+
 describe 'build task' do
   before :all do
     Rake.application.rake_require 'tasks/build'
@@ -37,7 +45,7 @@ describe 'build task' do
     end
 
     describe 'centos-6-puppet box' do
-      workingdir = "#{toplevel_dir}/fixtures/vagrant/centos-6-puppet"
+      workingdir = "#{toplevel_dir}/serverspec/centos-6-puppet"
       before(:each) do
         Dir.chdir(workingdir)
       end
@@ -62,7 +70,7 @@ describe 'build task' do
 
       it 'should successfully pass serverspec' do
         Dir.chdir("#{toplevel_dir}/serverspec/") do
-          run_serverspec = system "#{build_ssh_command build_ssh_config(workingdir)} 'cd /vagrant && ls && bundle install'"
+          run_serverspec = system "#{build_ssh_command build_ssh_config(workingdir)} #{build_env_vars} /vagrant/serverspec.sh"
           expect(run_serverspec).to be true
         end
       end
