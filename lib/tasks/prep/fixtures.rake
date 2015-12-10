@@ -8,14 +8,13 @@ namespace :prep do
         if Dir.exists?(task)
           puts "Fixtures for #{task} already exist."
         else
-          FileUtils.mkdir_p(task)
+          puts "Initializing serverspec for #{task}..."
+          FileUtils.cp_r('../fixtures/serverspec_skel', task)
           Dir.chdir(task) do
             puts "Writing Vagrantfile for #{task}..."
             FileUtils.rm_rf('Vagrantfile')
             system "vagrant init spec-#{task} ."
             puts "\n"
-            puts "Initializing serverspec for #{task}..."
-            system 'echo "1" | serverspec-init'
           end
         end
       end
