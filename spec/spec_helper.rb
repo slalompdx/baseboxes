@@ -1,0 +1,5 @@
+require 'rake'
+require 'pty'
+require 'rspec/core/rake_task'
+require './lib/util'
+require './lib/util/packer'
