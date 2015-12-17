@@ -31,15 +31,9 @@ describe 'build task' do
   before :all do
     Rake.application.rake_require 'tasks/build'
     Rake.application.rake_require 'tasks/list'
-    tasks = list_builds
   end
 
-  it 'should print hallo' do
-    puts 'hallo'
-  end
-
-  tasks.each do |task|
-    puts task
+  list_builds.each do |task|
     describe "build #{task}" do
       let :run_rake_task do
         Rake::Task['build'].reenable
