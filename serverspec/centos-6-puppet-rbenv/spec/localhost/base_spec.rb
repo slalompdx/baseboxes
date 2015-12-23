@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+describe file('/etc/redhat-release') do
+  its(:content) { should_match /CentOS release 6.7/ }
+end
+
 describe file('/etc/puppet/modules/rbenv') do
   it { should be_directory }
 end

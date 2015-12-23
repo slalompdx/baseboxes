@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+describe file('/etc/redhat-release') do
+  its(:content) { should_match /CentOS release 6.7/ }
+end
+
 describe package('puppet') do
   it { should be_installed.by('rpm').with_version('3.8') }
 end
