@@ -29,30 +29,13 @@
       "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
       "type": "vagrant",
       "keep_input_artifact": true
-
     }
   ],
   "provisioners": [
     {
-      "environment_vars": [
-        "HOME_DIR=/home/vagrant",
-        "HTTP_PROXY={{user `http_proxy`}}",
-        "HTTPS_PROXY={{user `https_proxy`}}",
-        "http_proxy={{user `http_proxy`}}",
-        "https_proxy={{user `https_proxy`}}",
-        "no_proxy={{user `no_proxy`}}"
-      ],
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
-      "scripts": [
-        "scripts/centos/networking.sh",
-        "scripts/common/rbenv_prereq.sh"
-      ],
-      "type": "shell"
-    },
-    {
-      "type": "puppet-masterless",
-      "execute_command": "cd {{.WorkingDir}} && {{.FacterVars}}{{if .Sudo}} sudo -E {{end}}puppet apply --verbose --detailed-exitcodes {{.ManifestFile}}",
-      "manifest_file": "puppet/ruby/rbenv.pp"
+      "type": "file",
+      "source": "puppet/jenkins/jenkins.pp",
+      "destination": "/tmp/jenkins.pp"
     },
     {
       "environment_vars": [
@@ -65,6 +48,8 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
+        "scripts/centos/jenkins_prereq.sh",
+        "scripts/common/jenkins.sh",
         "scripts/centos/7/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
@@ -72,15 +57,15 @@
     }
   ],
   "variables": {
-    "box_basename": "centos-7-puppet-rbenv",
+    "box_basename": "centos-7-puppet-jenkins",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "centos-7-puppet-rbenv",
+    "name": "centos-7-puppet-jenkins",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7-puppet-rbenv",
+    "template": "centos-7-puppet-jenkins",
     "version": "0.0.TIMESTAMP"
   }
 }

@@ -1,9 +1,5 @@
 include stdlib
 
-class { '::rbenv': }
-rbenv::plugin { 'sstephenson/ruby-build': latest => true }
-rbenv::build { '2.0.0-p647': global => true }
-
 $jenkins_config = {
   'JENKINS_JAVA_OPTIONS' => { 'value' => '-Djava.awt.headless=true -XX:MaxPermSize=512m' },
 }
