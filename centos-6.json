@@ -156,7 +156,7 @@
     }
   ],
   "variables": {
-    "box_basename": "centos-6.7",
+    "box_basename": "centos-6",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
@@ -165,13 +165,13 @@
     "iso_checksum": "c0c1a05d3d74fb093c6232003da4b22b0680f59d3b2fa2cb7da736bc40b3f2c5",
     "iso_checksum_type": "sha256",
     "iso_name": "CentOS-6.7-x86_64-bin-DVD1.iso",
-    "ks_path": "centos-6.7/ks.cfg",
+    "ks_path": "centos-6/ks.cfg",
     "metadata": "floppy/dummy_metadata.json",
     "mirror": "http://mirrors.kernel.org/centos",
     "mirror_directory": "6.7/isos/x86_64",
-    "name": "centos-6.7",
+    "name": "centos-6",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-6.7-x86_64",
+    "template": "centos-6",
     "version": "2.1.TIMESTAMP"
   }
 }
