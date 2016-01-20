@@ -149,7 +149,7 @@
         "scripts/common/vagrant.sh",
         "scripts/centos/6/update.sh",
         "scripts/common/vmtools.sh",
-        "scripts/centos/cleanup.sh",
+        "scripts/centos/6/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"

@@ -7,3 +7,4 @@ packer-centos-7-*/
 Vagrantfile
 artifacts/*
 ext/
+packer_cache/*
