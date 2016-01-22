@@ -4,7 +4,7 @@ namespace :build do
     version = args[:version] || %w(6 7)
     abort '"both" is deprecated as an explicit argument' if version == 'both'
     if version.include? '7'
-      stream_output build_packer_command(box: 'centos-7.1-x86_64', force: true)
+      stream_output build_packer_command(box: 'centos-7', force: true)
     end
 
     if version.include? '6'
