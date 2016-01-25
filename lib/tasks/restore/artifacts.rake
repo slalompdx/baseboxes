@@ -7,9 +7,7 @@ namespace :restore do
     puts 'Restoring raw packer builds'
     system 'cp -r artifacts/packer-centos-6-* .'
     system 'cp -r artifacts/packer-centos-7-* .'
-    puts 'Restoring bento builds'
-    system 'cp -r artifacts/packer-centos-6.* ext/bento/'
     puts 'Restoring raw bento builds'
-    system 'cp -r artifacts/*.iso ext/bento/packer_cache/'
+    system 'cp -r artifacts/packer_cache/*.iso packer_cache/'
   end
 end

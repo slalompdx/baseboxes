@@ -2,7 +2,7 @@ namespace :preserve do
   desc 'Preserve artifacts'
   task :artifacts do
     puts 'Preserving artifacts'
-    Rake::FileTask['artifacts'].invoke
+    system 'mkdir -p artifacts/'
     puts "Preserving builds directory"
     system 'cp -r builds/ artifacts/builds'
     puts "Preserving raw packer builds"
