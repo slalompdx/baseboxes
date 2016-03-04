@@ -1,0 +1,71 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "packer-centos-7-puppet-virtualbox/packer-virtualbox-ovf.ovf",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "http_directory": "http",
+      "output_directory": "packer-{{user `template`}}-virtualbox",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "480"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "type": "vagrant",
+      "keep_input_artifact": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "puppet/jenkins/jenkins.pp",
+      "destination": "/tmp/jenkins.pp"
+    },
+    {
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant",
+        "HTTP_PROXY={{user `http_proxy`}}",
+        "HTTPS_PROXY={{user `https_proxy`}}",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "scripts": [
+        "scripts/centos/jenkins_prereq.sh",
+        "scripts/common/jenkins.sh",
+        "scripts/centos/7/cleanup.sh",
+        "scripts/common/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "box_basename": "centos-7-puppet-jenkins",
+    "build_timestamp": "{{isotime \"20060102150403\"}}",
+    "git_revision": "__unknown_git_revision__",
+    "headless": "",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "name": "centos-7-puppet-jenkins",
+    "no_proxy": "{{env `no_proxy`}}",
+    "template": "centos-7-puppet-jenkins",
+    "version": "0.0.TIMESTAMP"
+  }
+}
