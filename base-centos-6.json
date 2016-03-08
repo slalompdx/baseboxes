@@ -147,30 +147,31 @@
         "scripts/common/sshd.sh",
         "scripts/centos/networking.sh",
         "scripts/common/vagrant.sh",
+        "scripts/centos/6/update.sh",
         "scripts/common/vmtools.sh",
-        "scripts/centos/7/cleanup.sh",
+        "scripts/centos/6/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"
     }
   ],
   "variables": {
-    "box_basename": "centos-7",
+    "box_basename": "base-centos-6",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
+    "iso_checksum": "c0c1a05d3d74fb093c6232003da4b22b0680f59d3b2fa2cb7da736bc40b3f2c5",
     "iso_checksum_type": "sha256",
-    "iso_name": "CentOS-7-x86_64-DVD-1511.iso",
-    "ks_path": "centos-7/ks.cfg",
+    "iso_name": "CentOS-6.7-x86_64-bin-DVD1.iso",
+    "ks_path": "centos-6/ks.cfg",
     "metadata": "floppy/dummy_metadata.json",
     "mirror": "http://mirrors.kernel.org/centos",
-    "mirror_directory": "7.2.1511/isos/x86_64",
-    "name": "centos-7",
+    "mirror_directory": "6.7/isos/x86_64",
+    "name": "base-centos-6",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7",
+    "template": "base-centos-6",
     "version": "2.1.TIMESTAMP"
   }
 }
