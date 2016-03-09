@@ -1,5 +1,5 @@
-desc 'Clean all builds and bento images'
+desc 'Clean all builds'
 task :clean do
-  puts 'Cleaning builds and bento images'
+  puts 'Cleaning builds'
   Rake::Task['clean:builds'].invoke
 end
