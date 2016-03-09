@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "virtualbox-ovf",
-      "source_path": "./packer-base-centos-6-virtualbox/base-centos-6.ovf",
+      "source_path": "./packer-centos-6-virtualbox/packer-virtualbox-ovf.ovf",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
