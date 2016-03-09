@@ -5,12 +5,13 @@
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "headless": false,
+      "headless": "{{ user `headless` }}",
       "boot_wait": "2m",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_wait_timeout": "8h",
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "output_directory": "packer-{{ user `template` }}-virtualbox",
       "guest_os_type": "Windows7_64",
       "disk_size": 61440,
       "floppy_files": [
@@ -35,7 +36,8 @@
           "--cpus",
           "2"
         ]
-      ]
+      ],
+      "vm_name": "{{ user `template ` }}"
     }
   ],
   "provisioners": [
@@ -56,15 +58,13 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "keep_input_artifact": false,
-      "output": "windows_7_{{.Provider}}.box",
+      "keep_input_artifact": true,
+      "output": "builds/{{ user `box_basename` }}.{{.Provider}}.box",
       "vagrantfile_template": "./vagrant_templates/vagrantfile-windows_7.template"
     }
   ],
   "variables": {
     "box_basename": "windows-7",
-    "build_timestamp": "{{isotime \"20060102150405\"}}",
-    "git_revision": "__unkown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
@@ -72,6 +72,7 @@
     "iso_url": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x64/EN/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso",
     "iso_checksum_type": "md5",
     "iso_checksum": "1d0d239a252cb53e466d39e752b17c28",
-    "autounattend": "./answer_files/7/Autounattend.xml"
+    "autounattend": "./answer_files/7/Autounattend.xml",
+    "template": "windows-7",
   }
 }
