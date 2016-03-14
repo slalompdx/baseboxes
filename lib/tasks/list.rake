@@ -1,9 +1,14 @@
 desc 'List images'
 task :list do
-  list = Array.new
+  list = Hash.new
   Dir.glob("#{toplevel_dir}/*.json") do |file|
-    list << file.split('.').first.split('/').last
+    item = file.split('.').first.split('/').last
+    unless list[item.count('-')]
+      list[item.count('-')] = Array.new
+    end
+    list[item.count('-')] << item
   end
-  list.promote('windows-7').promote('centos-7').promote('centos-6')
-  puts list
+  list.sort.each do |key, value|
+    puts value
+  end
 end
