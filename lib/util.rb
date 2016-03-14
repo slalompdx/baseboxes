@@ -33,3 +33,10 @@ def build_ssh_command(ssh_config)
   "ssh -o StrictHostKeyChecking=no -i #{ssh_config['IdentityFile']} " \
     "-p #{ssh_config['Port']} #{ssh_config['User']}@#{ssh_config['HostName']}"
 end
+
+class Array
+  def promote(promoted_element)
+    return self unless (found_index = find_index(promoted_element))
+    unshift(delete_at(found_index))
+  end
+end

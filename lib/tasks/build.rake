@@ -1,11 +1,9 @@
 desc 'Build specified image'
-task :build, [:name] do |_task, args|
+task :build, :name, :force do |_task, args|
   puts "Building image #{args[:name]}"
   if args[:name] =~ /\w*-\w$/
-    puts 'here'
     stream_output build_packer_command(format: 'iso', box: args[:name])
   else
-    puts 'there'
     stream_output build_packer_command(format: 'ovf', box: args[:name])
   end
   command = "mv packer-#{args[:name]}-virtualbox/*.ovf " \
