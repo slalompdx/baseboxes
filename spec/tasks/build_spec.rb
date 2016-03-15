@@ -11,10 +11,25 @@ def build_ssh_config(workingdir)
 end
 
 def build_env_vars
+  if ENV['http_proxy']
+    http_proxy = ENV['http_proxy']
+  elsif ENV['HTTP_PROXY']
+    http_proxy = ENV['HTTP_PROXY']
+  end
+  if ENV['https_proxy']
+    https_proxy = ENV['https_proxy']
+  elsif ENV['HTTPS_PROXY']
+    https_proxy = ENV['HTTPS_PROXY']
+  end
+  if ENV['no_proxy']
+    no_proxy = ENV['no_proxy']
+  elsif ENV['NO_PROXY']
+    no_proxy = ENV['NO_PROXY'}
+  end
   vars = ''
-  vars << "http_proxy=#{ENV['http_proxy']} " if ENV['http_proxy']
-  vars << "https_proxy=#{ENV['https_proxy']} " if ENV['https_proxy']
-  vars << "no_proxy=#{ENV['no_proxy']} " if ENV['no_proxy']
+  vars << "http_proxy=#{ENV['http_proxy']} " if http_proxy
+  vars << "https_proxy=#{ENV['https_proxy']} " if https_proxy
+  vars << "no_proxy=#{ENV['no_proxy']} " if no_proxy
   vars
 end
 
