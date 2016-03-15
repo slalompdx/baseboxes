@@ -34,10 +34,18 @@ describe 'build task' do
   end
 
   list_builds.each do |task|
+    if ENV['BOX_BUILD']
+      puts "BOX_BUILD set, skipping #{task}"
+      next unless ENV['BOX_BUILD'] == task
+    end
     describe "build #{task}" do
       let :run_rake_task do
-        Rake::Task['build'].reenable
-        Rake::Task['build'].invoke(task)
+        if ENV['BOX_OVERRIDE']
+          puts "BOX_OVERRIDE set; skipping build..."
+        else
+          Rake::Task['build'].reenable
+          Rake::Task['build'].invoke(task)
+        end
       end
 
       it "should build #{task} artifacts" do
