@@ -18,3 +18,4 @@ HTTPS_PROXY
 NO_PROXY
 BOX_BUILD - set to the name of a build to build only that box during rake spec
 BOX_OVERRIDE - set to true to have rake spec avoid building each box
+BOX_FORCE - rebuild packer box even if artifacts are present

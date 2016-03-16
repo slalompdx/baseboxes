@@ -11,21 +11,10 @@ def build_ssh_config(workingdir)
 end
 
 def build_env_vars
-  if ENV['http_proxy']
-    http_proxy = ENV['http_proxy']
-  elsif ENV['HTTP_PROXY']
-    http_proxy = ENV['HTTP_PROXY']
-  end
-  if ENV['https_proxy']
-    https_proxy = ENV['https_proxy']
-  elsif ENV['HTTPS_PROXY']
-    https_proxy = ENV['HTTPS_PROXY']
-  end
-  if ENV['no_proxy']
-    no_proxy = ENV['no_proxy']
-  elsif ENV['NO_PROXY']
-    no_proxy = ENV['NO_PROXY'}
-  end
+  http_proxy = ENV['HTTP_PROXY'] || ENV['http_proxy']
+  https_proxy = ENV['HTTPS_PROXY'] || ENV['https_proxy']
+  no_proxy = ENV['NO_PROXY'] || ENV['no_proxy']
+
   vars = ''
   vars << "http_proxy=#{ENV['http_proxy']} " if http_proxy
   vars << "https_proxy=#{ENV['https_proxy']} " if https_proxy
@@ -50,8 +39,10 @@ describe 'build task' do
 
   list_builds.each do |task|
     if ENV['BOX_BUILD']
-      puts "BOX_BUILD set, skipping #{task}"
-      next unless ENV['BOX_BUILD'] == task
+      unless ENV['BOX_BUILD'] == task
+        puts "BOX_BUILD set, skipping #{task}"
+        next
+      end
     end
     describe "build #{task}" do
       let :run_rake_task do
