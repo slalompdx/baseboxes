@@ -5,7 +5,7 @@ namespace :prep do
     Dir.chdir('serverspec') do
       tasks = capture_stdout { Rake::Task['list'].invoke }.split(/\n/)
       tasks.each do |task|
-        if Dir.exists?(task)
+        if Dir.exist?(task)
           puts "Fixtures for #{task} already exist."
         else
           puts "Initializing serverspec for #{task}..."

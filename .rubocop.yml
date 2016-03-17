@@ -1,3 +1,9 @@
 AllCops:
   Exclude:
     - 'ext/**/*'
+Metrics/AbcSize:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
