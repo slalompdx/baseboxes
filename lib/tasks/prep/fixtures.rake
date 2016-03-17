@@ -9,7 +9,13 @@ namespace :prep do
           puts "Fixtures for #{task} already exist."
         else
           puts "Initializing serverspec for #{task}..."
-          FileUtils.cp_r('../fixtures/serverspec_skel', task)
+          case task.count('-')
+          when 1
+            role = 'base'
+          else
+            role = 'default'
+          end
+          FileUtils.cp_r("../fixtures/serverspec_skel/#{role}", task)
           Dir.chdir(task) do
             puts "Writing Vagrantfile for #{task}..."
             FileUtils.rm_rf('Vagrantfile')
