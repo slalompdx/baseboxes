@@ -9,10 +9,6 @@ elif [ -s /etc/redhat-release ]; then
   distro=`cat /etc/redhat-release | sed 's/^\(CentOS\|Red Hat\).*/\1/i' | tr '[:upper:]' '[:lower:]'`
 fi
 
-
-# Remove development and kernel source packages
-yum -y remove gcc cpp kernel-devel kernel-headers;
-
 if [ "$distro" != 'red hat' ]; then
   yum -y clean all;
 fi

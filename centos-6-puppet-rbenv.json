@@ -51,6 +51,7 @@
         "scripts/centos/networking.sh",
         "scripts/common/rbenv_prereq.sh",
         "scripts/common/rbenv.sh",
+        "scripts/centos/6/cleanup-devtools.sh",
         "scripts/centos/6/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
