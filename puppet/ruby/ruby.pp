@@ -2,8 +2,8 @@ class { 'ruby':
   rubies => ['rh-ruby22'],
 }
 ruby::gems { 'rh-ruby22':
-  gems => { 'bundler'    => { 'version' => '1.10.6' },
-            'rake'       => { 'version' => '10.4.2' },
-            'serverspec' => { 'version' => '2.24.3' }
+  gems => { 'bundler'    => { 'version' => '1.11.2' },
+            'rake'       => { 'version' => '11.1.2' },
+            'serverspec' => { 'version' => '2.33.0' }
           }
 }
