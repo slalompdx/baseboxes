@@ -13,13 +13,12 @@
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "output_directory": "packer-{{ user `template` }}-virtualbox",
       "guest_os_type": "Windows7_64",
+      "http_directory": "blobs/client",
       "disk_size": 61440,
       "floppy_files": [
         "{{user `autounattend`}}",
         "./scripts/windows/dis-updates.ps1",
         "./scripts/windows/hotfix-KB3102810.bat",
-        "./scripts/windows/microsoft-updates.bat",
-        "./scripts/windows/win-updates.ps1",
         "./scripts/windows/openssh.ps1",
         "./scripts/windows/oracle-cert.cer"
       ],
@@ -35,12 +34,41 @@
           "{{.Name}}",
           "--cpus",
           "2"
+        ],
+        [
+          "storagectl",
+          "{{.Name}}",
+          "--name",
+          "SataController",
+          "--add",
+          "sata",
+          "--controller",
+          "IntelAHCI"
+        ],
+        [
+          "storageattach",
+          "{{.Name}}",
+          "--storagectl",
+          "SataController",
+          "--port",
+          "0",
+          "--device",
+          "0",
+          "--type",
+          "dvddrive",
+          "--medium",
+          "./blobs/win7_updates.iso"
         ]
       ],
       "vm_name": "{{ user `template ` }}"
     }
   ],
   "provisioners": [
+    {
+      "type": "file",
+      "source": "blobs/win7_updates.zip",
+      "destination": "C:/Temp/win7_updates"
+  },
     {
       "type": "shell",
       "remote_path": "/tmp/script.bat",
