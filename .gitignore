@@ -9,3 +9,5 @@ Vagrantfile
 artifacts/*
 ext/
 packer_cache/*
+.bundle/*
+blobs/*
