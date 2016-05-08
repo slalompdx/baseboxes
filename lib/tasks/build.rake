@@ -1,24 +1,26 @@
 desc 'Build specified image'
-task :build, :name do |_task, args|
-  puts "Building image #{args[:name]}"
-  if args[:name] =~ /^\w*-\w$/
-    stream_output build_packer_command(format: 'iso', box: args[:name])
+task :build do
+  name = ENV['BASE_BUILD'] || nil
+  abort 'Set BASE_BUILD to specify a target' unless name
+  puts "Building image #{name}"
+  if name =~ /^\w*-\w$/
+    stream_output build_packer_command(format: 'iso', box: name)
   else
-    stream_output build_packer_command(format: 'ovf', box: args[:name])
+    stream_output build_packer_command(format: 'ovf', box: name)
   end
-  command = "mv packer-#{args[:name]}-virtualbox/*.ovf " \
-    "packer-#{args[:name]}-virtualbox/packer-virtualbox-ovf.ovf"
+  command = "mv packer-#{name}-virtualbox/*.ovf " \
+    "packer-#{name}-virtualbox/packer-virtualbox-ovf.ovf"
   stream_output command
-  command = "mv packer-#{args[:name]}-vmware/packer-vmware-vmx-{{timestamp}}.vmsd " \
-    "packer-#{args[:name]}-vmware/packer-vmare-vmx.vmsd"
+  command = "mv packer-#{name}-vmware/packer-vmware-vmx-{{timestamp}}.vmsd " \
+    "packer-#{name}-vmware/packer-vmare-vmx.vmsd"
   stream_output command
-  command = "mv packer-#{args[:name]}-vmware/packer-vmware-vmx-{{timestamp}}.nvram " \
-    "packer-#{args[:name]}-vmware/packer-vmware-vmx.nvram"
+  command = "mv packer-#{name}-vmware/packer-vmware-vmx-{{timestamp}}.nvram " \
+    "packer-#{name}-vmware/packer-vmware-vmx.nvram"
   stream_output command
-  command = "mv packer-#{args[:name]}-vmware/packer-vmware-vmx-{{timestamp}}.vmx " \
-    "packer-#{args[:name]}-vmware/packer-vmware-vmx.vmx"
+  command = "mv packer-#{name}-vmware/packer-vmware-vmx-{{timestamp}}.vmx " \
+    "packer-#{name}-vmware/packer-vmware-vmx.vmx"
   stream_output command
-  command = "mv packer-#{args[:name]}-vmware/packer-vmware-vmx-{{timestamp}}.vmxf " \
-    "packer-#{args[:name]}-vmware/packer-vmware-vmx.vmxf"
+  command = "mv packer-#{name}-vmware/packer-vmware-vmx-{{timestamp}}.vmxf " \
+    "packer-#{name}-vmware/packer-vmware-vmx.vmxf"
   stream_output command
 end
