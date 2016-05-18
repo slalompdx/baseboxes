@@ -22,6 +22,20 @@
           "1"
         ]
       ]
+    },
+    {
+      "type": "vmware-vmx",
+      "source_path": "./packer-centos-6-puppet-vmware/packer-vmware-vmx.vmx",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "http_directory": "http",
+      "output_directory": "packer-{{user `template`}}-vmware",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "480",
+        "numvcpus": "1"
+      }
     }
   ],
   "post-processors": [

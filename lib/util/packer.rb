@@ -16,7 +16,11 @@ def build_packer_command(args = {})
   command << "-var http_proxy=#{http_proxy}" if http_proxy
   command << "-var https_proxy=#{https_proxy}" if https_proxy
   command << "-var no_proxy=#{no_proxy}" if no_proxy
-  command << "-only=virtualbox-#{actual[:format]}"
+  if actual[:format] == 'iso'
+    command << "-only=virtualbox-#{actual[:format]},vmware-#{actual[:format]}"
+  else
+    command << "-only=virtualbox-ovf,vmware-vmx"
+  end
   command << "#{actual[:box]}.json"
   command.join(' ')
 end

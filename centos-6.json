@@ -157,6 +157,7 @@
     }
   ],
   "variables": {
+    "atlas_token": "{{env `atlas_token`}}",
     "box_basename": "centos-6",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "git_revision": "__unknown_git_revision__",
