@@ -11,3 +11,4 @@ ext/
 packer_cache/*
 .bundle/*
 blobs/*
+*.rpm
