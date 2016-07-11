@@ -3,6 +3,7 @@
 *.box
 packer-centos-6-*/
 packer-centos-7-*/
+packer-rhel-7-*/
 packer-windows-*/
 *.swp
 Vagrantfile
