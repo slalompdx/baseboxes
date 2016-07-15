@@ -1,3 +1,11 @@
+== HOW TO USE ==
+
+Clone repo
+
+bundle install
+
+BASE_BUILD=rhel-7 be rake build
+
 == NOTE ON BOX NAMES ==
 
 Dash count indicates level in hierarchy and thus build order -
