@@ -5,6 +5,7 @@
       "source_path": "./packer-rhel-7-vmware/packer-vmare-vmx.vmx",
       "ssh_username": "packer",
       "ssh_password": "packer",
+      "ssh_pty": "true",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
       "http_directory": "http",
       "output_directory": "packer-{{user `template`}}-vmware",

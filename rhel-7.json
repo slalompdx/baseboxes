@@ -17,6 +17,7 @@
       "ssh_password": "packer",
       "ssh_port": 22,
       "ssh_username": "packer",
+      "ssh_pty": "true",
       "ssh_wait_timeout": "10000s",
       "tools_upload_flavor": "linux",
       "type": "vmware-iso",
