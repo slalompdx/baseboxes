@@ -29,6 +29,13 @@
       }
     }
   ],
+  "post-processors": [
+    {
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "keep_input_artifact": true,
+      "type": "vagrant"
+    }
+  ],
   "provisioners": [
     {
       "destination": "/tmp/bento-metadata.json",
