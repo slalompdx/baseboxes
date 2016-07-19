@@ -19,6 +19,7 @@
   "provisioners": [
     {
       "environment_vars": [
+        "DISABLE_RHN={{user `DISABLE_RHN`}}",
         "HOME_DIR=/home/vagrant",
         "HTTP_PROXY={{user `http_proxy`}}",
         "HTTPS_PROXY={{user `https_proxy`}}",
@@ -41,6 +42,7 @@
   "variables": {
     "box_basename": "rhel-7-puppet4",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
+    "DISABLE_RHN": "{{env `DISABLE_RHN`}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
