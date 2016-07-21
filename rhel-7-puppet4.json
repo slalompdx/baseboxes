@@ -3,8 +3,10 @@
     {
       "type": "vmware-vmx",
       "source_path": "./packer-rhel-7-vmware/packer-vmare-vmx.vmx",
+      "boot_wait": "10s",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
+      "ssh_wait_timeout": "10000s",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "http_directory": "http",
       "output_directory": "packer-{{user `template`}}-vmware",
