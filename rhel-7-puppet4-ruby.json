@@ -3,6 +3,7 @@
     {
       "type": "vmware-vmx",
       "source_path": "./packer-rhel-7-puppet4-vmware/packer-vmware-vmx.vmx",
+      "boot_wait": "20s",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
