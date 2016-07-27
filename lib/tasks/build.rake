@@ -3,9 +3,7 @@ task :build do
   name = ENV['BASE_BUILD'] || nil
   abort 'Set BASE_BUILD to specify a target' unless name
   puts "Building image #{name}"
-  puts build_packer_command(format: 'iso', box: name)
   if name =~ /^\w*-\w*$/
-    puts build_packer_command(format: 'iso', box: name)
     stream_output build_packer_command(format: 'iso', box: name)
     command = "mv packer-#{name}-vmware/#{name}.vmsd " \
       "packer-#{name}-vmware/packer-vmare-vmx.vmsd"
