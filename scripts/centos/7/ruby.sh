@@ -1,4 +1,12 @@
 #!/bin/sh
+# using software collections 2.3.0
 
-curl -s https://packagecloud.io/install/repositories/slalompdx/ruby/script.rpm.sh | sudo bash
-sudo yum -y install ruby2-2.3.1-1.el7.centos.x86_64
+subscription-manager register --username <userhere> \
+  --password '<pass here>'  --auto-attach
+
+subscription-manager repos --enable rhel-server-rhscl-7-rpms
+
+yum -y install rh-ruby23 scl-utils
+
+#/bin/scl enable rh-ruby23 bash
+echo "source scl_source enable rh-ruby23" >> /etc/profile
