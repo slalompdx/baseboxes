@@ -6,7 +6,7 @@
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "headless": "{{ user `headless` }}",
-      "boot_wait": "2m",
+      "boot_wait": "1m",
       "communicator": "winrm",
       "winrm_username": "vagrant",
       "winrm_password": "vagrant",
@@ -15,7 +15,7 @@
       "shutdown_timeout": "20m",
       "output_directory": "packer-{{ user `template` }}-virtualbox",
       "guest_os_type": "Windows2012_64",
-      "http_directory": "blobs/client",
+      "http_directory": "http",
       "disk_size": 61440,
       "floppy_files": [
         "{{user `autounattend`}}",
@@ -36,6 +36,7 @@
         [ "storagectl", "{{.Name}}", "--name", "SataController", "--add", "sata", "--controller", "IntelAHCI"],
         [ "storageattach", "{{.Name}}", "--storagectl", "SataController", "--port", "0", "--device", "0", "--type", "dvddrive", "--medium", "./blobs/wsusoffline-w63-x64.iso"]
       ],
+      "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template ` }}"
     }
   ],
@@ -54,13 +55,12 @@
     {
       "type": "vagrant",
       "keep_input_artifact": true,
-      "output": "builds/{{ user `box_basename` }}.{{.Provider}}.box",
-      "vagrantfile_template": "./vagrant_templates/vagrantfile-windows_2012r2.template"
+      "output": "builds/{{ user `box_basename` }}.{{.Provider}}.box"
     }
   ],
   "variables": {
-    "box_basename": "windows-2012r2",
     "name": "windows-2012r2",
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
