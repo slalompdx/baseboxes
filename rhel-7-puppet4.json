@@ -13,7 +13,9 @@
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "480",
-        "numvcpus": "1"
+        "numvcpus": "1",
+        "ethernet0.virtualDev": "vmxnet3",
+        "virtualHW.version": "11"
       }
     }
   ],
