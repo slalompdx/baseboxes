@@ -1,8 +1,8 @@
 #!/bin/sh
 # using software collections 2.3.0
 
-subscription-manager register --username terrih-1 \
-  --password 'k0\AJNM[hhW#'  --auto-attach
+subscription-manager register --username <userhere> \
+  --password '<pass here>'  --auto-attach
 
 subscription-manager repos --enable rhel-server-rhscl-7-rpms
 
