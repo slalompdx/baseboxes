@@ -1,25 +1,12 @@
 #!/bin/sh
+# using software collections 2.3.0
 
-cat > /etc/yum.repos.d/slalompdx_ruby.repo <<EOH
-[slalompdx_ruby]
-name=slalompdx_ruby
-baseurl=https://packagecloud.io/slalompdx/ruby/el/7/\$basearch
-repo_gpgcheck=1
-gpgcheck=0
-enabled=1
-gpgkey=https://packagecloud.io/slalompdx/ruby/gpgkey
-metadata_expire=300
+subscription-manager register --username terrih-1 \
+  --password 'k0\AJNM[hhW#'  --auto-attach
 
-[slalompdx_ruby-source]
-name=slalompdx_ruby-source
-baseurl=https://packagecloud.io/slalompdx/ruby/el/7/SRPMS
-repo_gpgcheck=1
-gpgcheck=0
-enabled=1
-gpgkey=https://packagecloud.io/slalompdx/ruby/gpgkey
-metadata_expire=300
-EOH
+subscription-manager repos --enable rhel-server-rhscl-7-rpms
 
-yum clean all
+yum -y install rh-ruby23 scl-utils
 
-sudo yum -y install ruby2-2.3.1-1.el7.centos.x86_64
+#/bin/scl enable rh-ruby23 bash
+echo "source scl_source enable rh-ruby23" >> /etc/profile
