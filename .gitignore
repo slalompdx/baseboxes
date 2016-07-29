@@ -1,9 +1,7 @@
 .vagrant
 .git
 *.box
-packer-centos-6-*/
-packer-centos-7-*/
-packer-windows-*/
+packer-*/
 *.swp
 Vagrantfile
 artifacts/*
