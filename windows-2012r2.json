@@ -6,7 +6,7 @@
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "headless": "{{ user `headless` }}",
-      "boot_wait": "2m",
+      "boot_wait": "1m",
       "communicator": "winrm",
       "winrm_username": "vagrant",
       "winrm_password": "vagrant",
@@ -14,8 +14,8 @@
       "shutdown_command": "a:/PackerShutdown.bat",
       "shutdown_timeout": "20m",
       "output_directory": "packer-{{ user `template` }}-virtualbox",
-      "guest_os_type": "Windows7_64",
-      "http_directory": "blobs/client",
+      "guest_os_type": "Windows2012_64",
+      "http_directory": "http",
       "disk_size": 61440,
       "floppy_files": [
         "{{user `autounattend`}}",
@@ -25,18 +25,18 @@
         "./scripts/windows/SetupComplete-2012.cmd",
         "./scripts/windows/postunattend.xml",
         "./scripts/windows/Test-Command.ps1",
-        "./scripts/windows/package.ps1",
-        "./scripts/windows/hotfix-KB3102810.bat"
+        "./scripts/windows/package.ps1"
       ],
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--natpf1", "guest_winrm,tcp,,55985,,5985" ],
         [ "modifyvm", "{{.Name}}", "--memory", "4096" ],
         [ "modifyvm", "{{.Name}}", "--vram", "48" ],
-        [ "modifyvm", "{{.Name}}", "--cpus", "2" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "4" ],
         [ "modifyvm", "{{.Name}}", "--ioapic", "on" ],
         [ "storagectl", "{{.Name}}", "--name", "SataController", "--add", "sata", "--controller", "IntelAHCI"],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SataController", "--port", "0", "--device", "0", "--type", "dvddrive", "--medium", "./blobs/wsusoffline-w61-x64.iso"]
+        [ "storageattach", "{{.Name}}", "--storagectl", "SataController", "--port", "0", "--device", "0", "--type", "dvddrive", "--medium", "./blobs/wsusoffline-w63-x64.iso"]
       ],
+      "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template ` }}"
     }
   ],
@@ -55,19 +55,20 @@
     {
       "type": "vagrant",
       "keep_input_artifact": true,
-      "output": "builds/{{ user `box_basename` }}.{{.Provider}}.box",
-      "vagrantfile_template": "./vagrant_templates/vagrantfile-windows_7.template"
+      "output": "builds/{{ user `box_basename` }}.{{.Provider}}.box"
     }
   ],
   "variables": {
-    "box_basename": "windows-7",
-    "headless": "true",
+    "name": "windows-2012r2",
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
     "no_proxy": "{{env `no_proxy`}}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x64/EN/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso",
-    "iso_checksum_type": "md5",
-    "iso_checksum": "1d0d239a252cb53e466d39e752b17c28",
-    "autounattend": "./answer_files/7/Autounattend.xml"
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
+    "iso_checksum_type": "sha1",
+    "iso_checksum": "849734f37346385dac2c101e4aacba4626bb141c",
+    "template": "windows-2012r2",
+    "autounattend": "./answer_files/2012r2/Autounattend.xml"
   }
 }
