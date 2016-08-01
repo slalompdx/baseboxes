@@ -48,7 +48,13 @@
     },
     {
       "type": "powershell",
-      "script": "./scripts/windows/provision.ps1"
+      "inline":
+        "./scripts/windows/setproxy.ps1 -proxy {{user `http_proxy`}} -no_proxy {{user `no_proxy`}}"
+    },
+    {
+      "type": "powershell",
+      "script":
+        "./scripts/windows/provision.ps1"
     }
   ],
   "post-processors": [
