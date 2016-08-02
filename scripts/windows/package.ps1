@@ -47,5 +47,5 @@ if (Test-Command -cmdname 'Uninstall-WindowsFeature') {
     Uninstall-WindowsFeature -Remove
 }
 
-
+start-sleep -s 300
 Restart-Computer

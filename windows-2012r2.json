@@ -38,6 +38,40 @@
       ],
       "virtualbox_version_file": ".vbox_version",
       "vm_name": "{{ user `template ` }}"
+    },
+    {
+      "boot_wait": "1m",
+      "disk_size": 61440,
+      "headless": "{{ user `headless` }}",
+      "http_directory": "http",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "output_directory": "packer-{{user `template`}}-vmware",
+      "shutdown_command": "a:/PackerShutdown.bat",
+      "communicator": "winrm",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_timeout": "8h",
+      "tools_upload_flavor": "windows",
+      "type": "vmware-iso",
+      "guest_os_type": "windows8srv-64",
+      "vm_name": "{{ user `template` }}",
+      "vmx_data": {
+        "memsize": "3072",
+        "numvcpus": "2",
+        "scsi0.virtualDev": "lsisas1068"
+      },
+      "floppy_files": [
+        "{{user `autounattend`}}",
+        "./scripts/windows/PackerShutdown.bat",
+        "./scripts/windows/updates.ps1",
+        "./scripts/windows/oracle-cert.cer",
+        "./scripts/windows/SetupComplete-2012.cmd",
+        "./scripts/windows/postunattend.xml",
+        "./scripts/windows/Test-Command.ps1",
+        "./scripts/windows/package.ps1"
+      ]
     }
   ],
   "provisioners": [
