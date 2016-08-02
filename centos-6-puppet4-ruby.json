@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "virtualbox-ovf",
-      "source_path": "./packer-centos-7-virtualbox/packer-virtualbox-ovf.ovf",
+      "source_path": "./packer-centos-6-puppet4-virtualbox/packer-virtualbox-ovf.ovf",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
@@ -25,7 +25,7 @@
     },
     {
       "type": "vmware-vmx",
-      "source_path": "./packer-centos-7-vmware/packer-vmare-vmx.vmx",
+      "source_path": "./packer-centos-6-puppet4-vmware/packer-vmware-vmx.vmx",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
@@ -62,26 +62,26 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
-        "scripts/centos/7/puppet.sh",
+        "scripts/centos/prereq.sh",
         "scripts/centos/tools.sh",
-        "scripts/centos/7/ruby_prereq.sh",
-        "scripts/centos/ruby.sh",
-        "scripts/centos/7/cleanup.sh",
+        "scripts/centos/6/ruby.sh",
+        "scripts/centos/6/cleanup-ruby.sh",
+        "scripts/centos/6/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"
     }
   ],
   "variables": {
-    "box_basename": "centos-7-puppet",
+    "box_basename": "centos-6-puppet4-ruby",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "centos-7-puppet",
+    "name": "centos-6-puppet4-ruby",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7-puppet",
+    "template": "centos-6-puppet4-ruby",
     "version": "0.0.TIMESTAMP"
   }
 }
