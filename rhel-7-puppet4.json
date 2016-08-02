@@ -1,54 +1,28 @@
 {
   "builders": [
     {
-      "type": "virtualbox-ovf",
-      "source_path": "./packer-centos-7-virtualbox/packer-virtualbox-ovf.ovf",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
-      "http_directory": "http",
-      "output_directory": "packer-{{user `template`}}-virtualbox",
-      "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-          "480"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-          "1"
-        ]
-      ]
-    },
-    {
       "type": "vmware-vmx",
-      "source_path": "./packer-centos-7-vmware/packer-vmare-vmx.vmx",
+      "source_path": "./packer-rhel-7-vmware/packer-vmare-vmx.vmx",
+      "boot_wait": "10s",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
-      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "http_directory": "http",
       "output_directory": "packer-{{user `template`}}-vmware",
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "480",
-        "numvcpus": "1"
+        "numvcpus": "1",
+        "ethernet0.virtualDev": "vmxnet3",
+        "virtualHW.version": "11"
       }
-    }
-  ],
-  "post-processors": [
-    {
-      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
-      "type": "vagrant",
-      "keep_input_artifact": true
-
     }
   ],
   "provisioners": [
     {
       "environment_vars": [
+        "DISABLE_RHN={{user `DISABLE_RHN`}}",
         "HOME_DIR=/home/vagrant",
         "HTTP_PROXY={{user `http_proxy`}}",
         "HTTPS_PROXY={{user `https_proxy`}}",
@@ -58,6 +32,7 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
+        "scripts/rhel/7/satellite.sh",
         "scripts/centos/7/puppet4.sh",
         "scripts/centos/tools.sh",
         "scripts/centos/7/cleanup-devtools.sh",
@@ -68,15 +43,16 @@
     }
   ],
   "variables": {
-    "box_basename": "centos-7-puppet4",
+    "box_basename": "rhel-7-puppet4",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
+    "DISABLE_RHN": "{{env `DISABLE_RHN`}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "centos-7-puppet4",
+    "name": "rhel-7-puppet4",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "centos-7-puppet4",
+    "template": "rhel-7-puppet4",
     "version": "0.0.TIMESTAMP"
   }
 }
