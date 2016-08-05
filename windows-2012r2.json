@@ -63,7 +63,7 @@
         "scsi0.virtualDev": "lsisas1068",
         "ide1:1.present": "TRUE",
         "ide1:1.devicetype": "cdrom-image",
-        "ide1:1.filename": "blobs/wsusoffline-w63-x64.iso",
+        "ide1:1.filename": "{{template_dir}}/blobs/wsusoffline-w63-x64.iso",
         "ide1:1.startConnected": "TRUE"
       },
       "floppy_files": [

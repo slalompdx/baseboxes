@@ -1,6 +1,12 @@
 #Get Operating System version and set source files for updates
 $OS = Get-WmiObject Win32_OperatingSystem
 
+If (!(Test-Path("e:")))
+{
+  Write-Host "Updates drive is not mounted."
+  Start-Sleep -s 10000
+}
+
 If ($OS | where {$OS.version -like "6.1.*"})
 {
   $source = "e:\w61-x64\glb"
