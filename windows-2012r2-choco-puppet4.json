@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "vmware-vmx",
-      "source_path": "./packer-windows-2012r2-vmware/windows-2012r2.vmx",
+      "source_path": "./packer-windows-2012r2-choco-vmware/packer-vmware-vmx.vmx",
       "boot_wait": "1m",
       "communicator": "winrm",
       "winrm_username": "vagrant",
@@ -10,29 +10,22 @@
       "winrm_timeout": "8h",
       "tools_upload_flavor": "windows",
       "output_directory": "packer-{{user `template`}}-vmware",
-      "shutdown_command": "a:/PackerShutdown.bat",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "480",
         "numvcpus": "1",
         "ethernet0.virtualDev": "vmxnet3",
         "virtualHW.version": "11"
-      },
-      "floppy_files": [
-        "./scripts/windows/PackerShutdown.bat"
-      ]
+      }
     }
   ],
   "provisioners": [
     {
       "type": "powershell",
-      "script":
-        "./scripts/windows/install_choco.ps1"
-    },
-    {
-      "type": "windows-shell",
-      "script": "./scripts/windows/install_puppet.bat",
-      "pause_before": "1m"
+      "elevated_user": "vagrant",      
+      "elevated_password": "vagrant",
+      "inline": "choco install -y puppet-agent"
     }
   ],
   "post-processors": [
@@ -43,12 +36,12 @@
     }
   ],
   "variables": {
-    "name": "windows-2012r2-puppet4",
+    "name": "windows-2012r2-choco-puppet4",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "windows-2012r2-puppet4"
+    "template": "windows-2012r2-choco-puppet4"
   }
 }
