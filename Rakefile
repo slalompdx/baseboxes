@@ -1,6 +1,8 @@
 require 'rake'
 require 'pty'
 require 'net/https'
+require 'open-uri'
+require 'ruby-progressbar'
 require 'rspec/core/rake_task'
 require './lib/util'
 require './lib/util/packer'
