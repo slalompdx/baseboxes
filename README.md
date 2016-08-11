@@ -22,6 +22,14 @@ centos-6 <-- base build
 centos-6-puppet <-- builds on this
 centos-6-puppet-jenkins <-- builds on centos-6-puppet
 
+== NOTE ON WINDOWS BUILDS ==
+
+You will need an updates file locally (to be fixed later) for windows to mount. For now, this needs to be downloaded from Slalom's S3 service to a blobs/ directory within the baseboxes directory.
+
+Download the Windows updates ISO from:
+
+[https://s3-us-west-2.amazonaws.com/slalompdx-appdev/ISO/Windows/Updates/wsusoffline-w63-x64.iso](https://s3-us-west-2.amazonaws.com/slalompdx-appdev/ISO/Windows/Updates/wsusoffline-w63-x64.iso)
+
 
 == Proxies ==
 Call packer with -var and then http_proxy and https_proxy (and their capitalized counterparts if you like) to build boxes with proxies.
