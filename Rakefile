@@ -1,5 +1,6 @@
 require 'rake'
 require 'pty'
+require 'net/https'
 require 'rspec/core/rake_task'
 require './lib/util'
 require './lib/util/packer'
