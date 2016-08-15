@@ -26,9 +26,13 @@ centos-6-puppet-jenkins <-- builds on centos-6-puppet
 
 You will need an updates file locally (to be fixed later) for windows to mount. For now, this needs to be downloaded from Slalom's S3 service to a blobs/ directory within the baseboxes directory.
 
-Download the Windows updates ISO from:
+Download the Windows updates ISO by running:
 
-[https://s3-us-west-2.amazonaws.com/slalompdx-appdev/ISO/Windows/Updates/wsusoffline-w63-x64.iso](https://s3-us-west-2.amazonaws.com/slalompdx-appdev/ISO/Windows/Updates/wsusoffline-w63-x64.iso)
+```
+bundle exec rake winblob
+```
+
+That command creates the blobs directory and downloads the updates ISO to that directory.
 
 
 == Proxies ==
