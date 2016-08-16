@@ -1,1 +1,0 @@
-choco -y install puppet-agent -installArgs '"PUPPET_MASTER_SERVER=puppet.standard.com"'

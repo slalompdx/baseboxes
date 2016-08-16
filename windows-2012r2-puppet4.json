@@ -9,29 +9,22 @@
       "winrm_password": "vagrant",
       "winrm_timeout": "8h",
       "output_directory": "packer-{{user `template`}}-vmware",
-      "shutdown_command": "a:/PackerShutdown.bat",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "480",
         "numvcpus": "1",
         "ethernet0.virtualDev": "vmxnet3",
         "virtualHW.version": "11"
-      },
-      "floppy_files": [
-        "./scripts/windows/PackerShutdown.bat"
-      ]
+      }
     }
   ],
   "provisioners": [
     {
       "type": "powershell",
-      "script":
-        "./scripts/windows/install_choco.ps1"
-    },
-    {
-      "type": "windows-shell",
-      "script": "./scripts/windows/install_puppet.bat",
-      "pause_before": "1m"
+      "elevated_user": "vagrant",      
+      "elevated_password": "vagrant",
+      "script": "./scripts/windows/install_puppet.ps1"
     }
   ],
   "post-processors": [
@@ -43,7 +36,7 @@
   ],
   "variables": {
     "name": "windows-2012r2-puppet4",
-    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "build_timestamp": "{{isotime \"2006-01-02\"}}",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
