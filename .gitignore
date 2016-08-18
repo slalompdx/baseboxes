@@ -9,4 +9,8 @@ ext/
 packer_cache/*
 .bundle/*
 blobs/*
+<<<<<<< HEAD
+packer--virtualbox/
+=======
 *.rpm
+>>>>>>> 46fc63efe0946a7489235dd9f5c4c0cb17194ae9
