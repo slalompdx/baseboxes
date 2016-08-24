@@ -64,6 +64,7 @@ DEPENDENCIES
   rake
   rspec
   rubocop
+  ruby-progressbar
   serverspec
 
 BUNDLED WITH
