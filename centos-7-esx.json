@@ -1,0 +1,105 @@
+{
+  "builders": [
+
+    {
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `ks_path`}}<enter><wait>"
+      ],
+      "type": "vmware-iso",
+      "remote_type": "esx5",
+      "remote_host": "192.168.3.128",
+      "remote_username": "root",
+      "remote_password": "vagrant",
+      "remote_cache_datastore": "datastore1",
+      "remote_cache_directory": "ISOs",
+      "remote_datastore": "VMs/images",
+      "vnc_port_min": "5986",
+      "vnc_port_max": "6100",
+      "vmdk_name": "centos-7-test",
+      "disk_size": "10240",
+      "disk_type_id": "thin",
+      "boot_wait": "30s",
+      "guest_os_type": "centos-64",
+      "keep_registered": true,
+      "headless": "{{ user `headless` }}",
+      "http_directory": "http",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
+      "output_directory": "packer-{{user `template`}}-vmware",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/halt -h -p",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_pty" : true,
+      "ssh_username": "vagrant",
+      "ssh_wait_timeout": "10000s",
+      "tools_upload_flavor": "linux",
+      "vm_name": "{{ user `template` }}",
+      "output_directory": "images",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "2048",
+        "numvcpus": "4",
+        "ethernet0.networkName": "VM Network",
+        "ethernet0.present": "TRUE",
+        "ethernet0.startConnected": "TRUE",
+        "ethernet0.virtualDev": "e1000",
+        "ethernet0.addressType": "generated",
+        "ethernet0.generatedAddressOffset": "0",
+        "ethernet0.wakeOnPcktRcv": "FALSE"
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "keep_input_artifact": true,
+      "type": "vagrant-vmware-ovf"
+    }
+  ],
+  "provisioners": [
+    {
+      "destination": "/tmp/bento-metadata.json",
+      "source": "{{user `metadata`}}",
+      "type": "file"
+    },
+    {
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "execute_command": "sudo yum install -y open-vm-tools",
+      "scripts": [
+        "scripts/common/metadata.sh",
+        "scripts/common/sshd.sh",
+        "scripts/centos/networking.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/centos/7/cleanup.sh",
+        "scripts/common/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "box_basename": "centos-7-test",
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "git_revision": "__unknown_git_revision__",
+    "headless": "",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
+    "iso_checksum_type": "none",
+    "iso_name": "CentOS-7-x86_64-DVD-1511.iso",
+    "ks_path": "centos-7/ks.cfg",
+    "metadata": "floppy/dummy_metadata.json",
+    "mirror": "http://mirrors.kernel.org/centos",
+    "mirror_directory": "7.2.1511/isos/x86_64",
+    "name": "centos-7-test",
+    "no_proxy": "{{env `no_proxy`}}",
+    "template": "centos-7",
+    "version": "2.1.TIMESTAMP"
+  }
+}
