@@ -1,11 +1,4 @@
 {
-  "variables": {
-    "iso_file": "VMware-VMvisor-Installer-6.0.0.update02-3620759.x86_64.iso",
-    "iso_checksum": "5a93f457980d18f7061c8b550c509682070cadc7",
-    "iso_checksum_type": "sha1",
-    "disk_size": "40960",
-    "root_password": "vagrant"
-  },
   "builders": [
     {
       "name": "vmware-esxi",
@@ -16,7 +9,7 @@
       "disk_size": "{{ user `disk_size` }}",
       "disk_type_id": 0,
       "guest_os_type": "vmkernel5",
-      "iso_url": "{{user `iso_file`}}",
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_file`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{ user `iso_checksum_type` }}",
       "ssh_username": "root",
@@ -38,6 +31,10 @@
     }
   ],
   "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "scripts/esxi/download-pubkey.sh"
+    },
     {
       "type": "file",
       "source": "http/vagrant.pub",
@@ -69,5 +66,14 @@
         "vagrantfile_template": "scripts/esxi/esxi-vagrantfile_template.rb"
       }
     ]
-  ]
+  ],
+  "variables": {
+    "iso_file": "VMware-VMvisor-Installer-6.0.0.update02-3620759.x86_64.iso",
+    "mirror": "https://s3-us-west-2.amazonaws.com",
+    "mirror_directory": "slalompdx/ISO/Vmware",
+    "iso_checksum": "5a93f457980d18f7061c8b550c509682070cadc7",
+    "iso_checksum_type": "sha1",
+    "disk_size": "40960",
+    "root_password": "vagrant"
+  }
 }
