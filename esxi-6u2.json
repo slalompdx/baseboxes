@@ -73,7 +73,7 @@
     "mirror_directory": "slalompdx/ISO/Vmware",
     "iso_checksum": "5a93f457980d18f7061c8b550c509682070cadc7",
     "iso_checksum_type": "sha1",
-    "disk_size": "40960",
+    "disk_size": "200960",
     "root_password": "vagrant"
   }
 }
