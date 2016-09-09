@@ -1,5 +1,5 @@
 # rubocop:disable Metrics/MethodLength
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 def build_packer_command(args = {})
   defaults = {
