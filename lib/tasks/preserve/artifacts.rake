@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :preserve do
   desc 'Preserve artifacts'
   task :artifacts do

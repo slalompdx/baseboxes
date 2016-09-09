@@ -1,7 +1,9 @@
 # rubocop:disable Metrics/MethodLength
+# frozen_string_literal: true
+
 def build_packer_command(args = {})
   defaults = {
-    builder: ['vmware', 'virtualbox'],
+    builder: %w(vmware virtualbox),
     format: 'iso',
     box: 'centos-7.1-x86_64',
     force: ENV['BOX_FORCE'] || false
@@ -17,21 +19,19 @@ def build_packer_command(args = {})
   command << " -var http_proxy=#{http_proxy}" if http_proxy
   command << " -var https_proxy=#{https_proxy}" if https_proxy
   command << " -var no_proxy=#{no_proxy}" if no_proxy
-  command << " -only="
+  command << ' -only='
   actual[:builder].each_with_index do |builder, index|
     if actual[:format] == 'ovf'
-      if builder == 'vmware'
-        format = 'vmx'
-      else
-        format = 'ovf'
-      end
+      format = if builder == 'vmware'
+                 'vmx'
+               else
+                 'ovf'
+               end
     else
       format = actual[:format]
     end
     command << "#{builder}-#{format}"
-    unless index == actual[:builder].size - 1
-      command << ","
-    end
+    command << ',' unless index == actual[:builder].size - 1
   end
   command << " #{actual[:box]}.json"
 end
