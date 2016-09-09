@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :ensure do
   desc 'Ensure ext/ directory'
   task 'ext' do

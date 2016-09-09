@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Clean artifacts'
 task :clean do
   system 'rm -r builds/*'

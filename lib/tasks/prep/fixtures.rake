@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :prep do
   desc 'Build spec fixtures'
   task :fixtures do
@@ -9,12 +11,12 @@ namespace :prep do
           puts "Fixtures for #{task} already exist."
         else
           puts "Initializing serverspec for #{task}..."
-          case task.count('-')
-          when 1
-            role = 'base'
-          else
-            role = 'default'
-          end
+          role = case task.count('-')
+                 when 1
+                   'base'
+                 else
+                   'default'
+                 end
           FileUtils.cp_r("../fixtures/serverspec_skel/#{role}", task)
           Dir.chdir(task) do
             puts "Writing Vagrantfile for #{task}..."

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :restore do
   desc 'Restore artifacts'
   task :artifacts do

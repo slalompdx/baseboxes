@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'Clean all builds'
 task :clean do
   puts 'Cleaning builds'
