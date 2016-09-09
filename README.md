@@ -16,6 +16,6 @@ Call packer with -var and then http_proxy and https_proxy (and their capitalized
 HTTP_PROXY
 HTTPS_PROXY
 NO_PROXY
-BOX_BUILD - set to the name of a build to build only that box during rake spec
-BOX_OVERRIDE - set to true to have rake spec avoid building each box
-BOX_FORCE - rebuild packer box even if artifacts are present
+BASE_BUILD = set to the name of the build you want
+BUILDER = defaults to 'vmware,virtualbox'
+FORMAT = defaults to 'iso' - 'ovf' gets special treatment with vmware
