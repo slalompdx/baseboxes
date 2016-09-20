@@ -1,9 +1,7 @@
 .vagrant
 .git
 *.box
-packer-centos-6-*/
-packer-centos-7-*/
-packer-windows-*/
+packer-*/
 *.swp
 Vagrantfile
 artifacts/*
@@ -11,5 +9,6 @@ ext/
 packer_cache/*
 .bundle/*
 blobs/*
+packer--virtualbox/
 *.rpm
 *.iso
