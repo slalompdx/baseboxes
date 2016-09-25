@@ -11,3 +11,4 @@ packer_cache/*
 blobs/*
 packer--virtualbox/
 *.rpm
+*.iso
