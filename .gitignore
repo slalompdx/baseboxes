@@ -12,3 +12,4 @@ packer_cache/*
 .bundle/*
 blobs/*
 *.rpm
+*.iso

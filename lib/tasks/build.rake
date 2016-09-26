@@ -6,21 +6,21 @@ task :build do
   if name =~ /^\w*-\w$/
     stream_output build_packer_command(format: 'iso', box: name)
     command = "mv packer-#{name}-vmware/#{name}.vmsd " \
-      "packer-#{name}-vmware/packer-vmare-vmx.vmsd"
+      "packer-#{name}-vmware/packer-vmware-vmx.vmsd"
     stream_output command
     command = "mv packer-#{name}-vmware/#{name}.nvram " \
-      "packer-#{name}-vmware/packer-vmare-vmx.nvram"
+      "packer-#{name}-vmware/packer-vmware-vmx.nvram"
     stream_output command
     command = "mv packer-#{name}-vmware/#{name}.vmx " \
-      "packer-#{name}-vmware/packer-vmare-vmx.vmx"
+      "packer-#{name}-vmware/packer-vmware-vmx.vmx"
     stream_output command
     command = "mv packer-#{name}-vmware/#{name}.vmxf " \
-      "packer-#{name}-vmware/packer-vmare-vmx.vmxf"
+      "packer-#{name}-vmware/packer-vmware-vmx.vmxf"
     stream_output command
   else
     stream_output build_packer_command(format: 'ovf', box: name)
     command = "mv packer-#{name}-vmware/packer-vmware-vmx-{{timestamp}}.vmsd " \
-      "packer-#{name}-vmware/packer-vmare-vmx.vmsd"
+      "packer-#{name}-vmware/packer-vmware-vmx.vmsd"
     stream_output command
     command = "mv packer-#{name}-vmware/packer-vmware-vmx-{{timestamp}}.nvram " \
       "packer-#{name}-vmware/packer-vmware-vmx.nvram"
