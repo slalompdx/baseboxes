@@ -29,4 +29,10 @@ net start wuauserv
 cmd /c C:\Windows\Temp\ultradefrag-portable-6.1.0.amd64\udefrag.exe --optimize --repeat C:
 
 cmd /c %SystemRoot%\System32\reg.exe ADD HKCU\Software\Sysinternals\SDelete /v EulaAccepted /t REG_DWORD /d 1 /f
-cmd /c C:\Windows\Temp\sdelete.exe -q -z C:
+#cmd /c C:\Windows\Temp\sdelete.exe -q -z C:
+powershell C:\Windows\Temp\NimbleFastReclaim.ps1 C:
+cmd.exe /c winrm set winrm/config/winrs @{MaxMemoryPerShellMB="512"}
+cmd.exe /c winrm set winrm/config @{MaxTimeoutms="1800000"}
+cmd.exe /c winrm set winrm/config/service @{AllowUnencrypted="true"}
+cmd.exe /c winrm set winrm/config/service/auth @{Basic="true"}
+cmd.exe /c sc config WinRM start= auto
