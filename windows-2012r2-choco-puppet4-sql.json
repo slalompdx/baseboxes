@@ -1,0 +1,81 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "./packer-windows-2012r2-choco-puppet4-virtualbox/packer-virtualbox-ovf.ovf",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "6h",
+      "boot_wait": "2m",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "output_directory": "packer-{{user `template`}}-virtualbox",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    },
+    {
+      "type": "vmware-vmx",
+      "source_path": "./packer-windows-2012r2-choco-puppet4-vmware/packer-vmware-vmx.vmx",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "6h",
+      "boot_wait": "2m",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "http_directory": "http",
+      "output_directory": "packer-{{user `template`}}-vmware",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "2048",
+        "numvcpus": "1"
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "type": "vagrant",
+      "keep_input_artifact": true
+
+    }
+  ],
+  "provisioners": [
+    {
+      "remote_path": "/tmp/script.ps1",
+      "scripts": [
+        "scripts/windows/sqlserver.ps1"
+      ],
+      "type": "powershell"
+    },
+    {
+      "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
+      "remote_path": "/tmp/script.bat",
+      "scripts": [
+        "scripts/windows/compact.bat"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "box_basename": "windows-2012r2-choco-puppet4-sql",
+    "build_timestamp": "{{isotime \"20060102150403\"}}",
+    "git_revision": "__unknown_git_revision__",
+    "headless": "",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "name": "windows-2012r2-choco-puppet4-sql",
+    "no_proxy": "{{env `no_proxy`}}",
+    "template": "windows-2012r2-choco-puppet4-sql",
+    "version": "0.0.TIMESTAMP"
+  }
+}
