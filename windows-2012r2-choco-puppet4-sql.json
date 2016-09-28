@@ -51,7 +51,7 @@
   ],
   "provisioners": [
     {
-      "execute_command": "powershell "& { {{.Vars}}{{.Path}}; exit $LastExitCode}",
+      "execute_command": "powershell \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
       "remote_path": "/tmp/script.ps1",
       "scripts": [
         "scripts/windows/sqlserver.ps1"
