@@ -53,8 +53,8 @@
     {
       "execute_command": "powershell \"& { {{.Path}}; exit $LastExitCode}\"",
       "inline": [
-        "Invoke-WebRequest -OutFile C:/sqlserver_2012_ee_sp3.iso http://{{ .HTTPIP }}:{{ .HTTPPort }}/sqlserver_2012_ee_sp3.iso",
-        "Invoke-WebRequest -OutFile C:/ConfigurationFile.ini http://{{ .HTTPIP }}:{{ .HTTPPort }}/ConfigurationFile.ini",
+        "Invoke-WebRequest -OutFile C:/sqlserver_2012_ee_sp3.iso http://{{ user `host_server` }}:{{ user `host_port` }}/sqlserver_2012_ee_sp3.iso",
+        "Invoke-WebRequest -OutFile C:/ConfigurationFile.ini http://{{ user `host_server` }}:{{ user `host_port` }}/ConfigurationFile.ini",
         "$Destination = \"C:/sqlserver_2012_ee_sp3.iso\"",
         "Mount-DiskImage $Destination"
       ],
@@ -78,6 +78,8 @@
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
+    "host_server": "{{ .HTTPIP }}",
+    "host_port": "{{ .HTTPPort }}",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
     "name": "windows-2012r2-choco-puppet4-sql",
