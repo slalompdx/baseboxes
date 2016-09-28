@@ -32,12 +32,8 @@
       "ssh_wait_timeout": "6h",
       "boot_wait": "2m",
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
-      "http_directory": "http",
+      "http_directory": "blobs",
       "output_directory": "packer-{{user `template`}}-vmware",
-      "floppy_files": [
-        "./blobs/sqlserver_2012_ee_sp3.iso",
-        "./http/windows-2012r2/ConfigurationFile.ini"
-      ],
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "2048",
@@ -56,13 +52,16 @@
   "provisioners": [
     {
       "execute_command": "powershell \"& { {{.Path}}; exit $LastExitCode}\"",
-      "scripts": [
-        "scripts/windows/sqlserver.ps1"
+      "inline": [
+        "Invoke-WebRequest -OutFile C:/sqlserver_2012_ee_sp3.iso http://{{ .HTTPIP }}:{{ .HTTPPort }}/sqlserver_2012_ee_sp3.iso",
+        "Invoke-WebRequest -OutFile C:/ConfigurationFile.ini http://{{ .HTTPIP }}:{{ .HTTPPort }}/ConfigurationFile.ini",
+        "$Destination = \"C:/sqlserver_2012_ee_sp3.iso\"",
+        "Mount-DiskImage $Destination"
       ],
       "type": "powershell"
     },
     {
-      "inline": "E:\setup.exe /ConfigurationFile=c:\ConfigurationFile.ini /QS",
+      "inline": "E:/setup.exe /ConfigurationFile=c:/ConfigurationFile.ini /QS",
       "type": "shell"
     },
     {
