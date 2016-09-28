@@ -51,8 +51,17 @@
   ],
   "provisioners": [
     {
-      "execute_command": "powershell \"& { {{.Vars}}{{.Path}}; exit $LastExitCode}\"",
-      "remote_path": "/tmp/script.ps1",
+      "source": "blobs/sqlserver_2012_ee_sp3.iso",
+      "destination": "C:/sqlserver_2012_ee_sp3.iso",
+      "type": "file"
+    },
+    {
+      "source": "http/windows-2012r2/ConfigurationFile.ini",
+      "destination": "C:/ConfigurationFile.ini",
+      "type": "file"
+    },
+    {
+      "execute_command": "powershell \"& { {{.Path}}; exit $LastExitCode}\"",
       "scripts": [
         "scripts/windows/sqlserver.ps1"
       ],
