@@ -34,6 +34,10 @@
       "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "http_directory": "http",
       "output_directory": "packer-{{user `template`}}-vmware",
+      "floppy_files": [
+        "./blobs/sqlserver_2012_ee_sp3.iso",
+        "./http/windows-2012r2/ConfigurationFile.ini"
+      ],
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "2048",
@@ -50,16 +54,6 @@
     }
   ],
   "provisioners": [
-    {
-      "source": "blobs/sqlserver_2012_ee_sp3.iso",
-      "destination": "C:/sqlserver_2012_ee_sp3.iso",
-      "type": "file"
-    },
-    {
-      "source": "http/windows-2012r2/ConfigurationFile.ini",
-      "destination": "C:/ConfigurationFile.ini",
-      "type": "file"
-    },
     {
       "execute_command": "powershell \"& { {{.Path}}; exit $LastExitCode}\"",
       "scripts": [
