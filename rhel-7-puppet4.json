@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "vmware-vmx",
-      "source_path": "./packer-rhel-7-vmware/packer-vmare-vmx.vmx",
+      "source_path": "./packer-rhel-7-vmware/packer-vmware-vmx.vmx",
       "boot_wait": "10s",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
