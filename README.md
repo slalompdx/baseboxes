@@ -4,7 +4,7 @@ Clone repo
 
 bundle install
 
-BASE_BUILD=rhel-7 be rake build
+BASE_BUILD=centos-7 bundle exec rake build
 
 == NOTE ON BOX NAMES ==
 
