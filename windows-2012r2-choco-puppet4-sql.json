@@ -38,6 +38,11 @@
         "cpuid.coresPerSocket": "1",
         "memsize": "2048",
         "numvcpus": "1"
+        "scsi0.virtualDev": "lsisas1068",
+        "scsi0:0.present": "true",
+        "scsi0:0.startConnected": "TRUE",
+        "scsi0:0.deviceType": "cdrom-image",
+        "scsi0:0.filename": "blobs/sqlserver_2012_ee_sp3.iso"
       }
     }
   ],
@@ -51,21 +56,9 @@
   ],
   "provisioners": [
     {
-      "source": "blobs/sqlserver_2012_ee_sp3.iso",
-      "destination": "c:/users/vagrant",
-      "type": "file"
-    },
-    {
       "source": "blobs/ConfigurationFile.ini",
       "destination": "c:/users/vagrant",
       "type": "file"
-    },
-    {
-      "execute_command": "powershell \"& { {{.Path}}; exit $LastExitCode}\"",
-      "inline": [
-        "Mount-DiskImage C:/users/vagrant/sqlserver_2012_ee_sp3.iso"
-      ],
-      "type": "powershell"
     },
     {
       "inline": "E:/setup.exe /ConfigurationFile=c:/users/vagrant/ConfigurationFile.ini /QS",
