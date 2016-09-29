@@ -61,11 +61,7 @@
       "type": "file"
     },
     {
-      "inline": "E:/setup.exe /ConfigurationFile=c:/users/vagrant/ConfigurationFile.ini /Q",
-      "valid_exit_codes": [
-        0,
-        1
-      ],
+      "inline": "cmd.exe /c E:/setup.exe /ConfigurationFile=c:/users/vagrant/ConfigurationFile.ini /Q",
       "type": "shell"
     },
     {
