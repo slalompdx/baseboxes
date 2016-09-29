@@ -37,12 +37,12 @@
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "2048",
-        "numvcpus": "1"
+        "numvcpus": "1",
         "scsi0.virtualDev": "lsisas1068",
-        "scsi0:0.present": "true",
-        "scsi0:0.startConnected": "TRUE",
-        "scsi0:0.deviceType": "cdrom-image",
-        "scsi0:0.filename": "blobs/sqlserver_2012_ee_sp3.iso"
+        "scsi0:1.present": "true",
+        "scsi0:1.startConnected": "TRUE",
+        "scsi0:1.deviceType": "cdrom-image",
+        "scsi0:1.filename": "/proj/baseboxes/blobs/sqlserver_2012_ee_sp3.iso"
       }
     }
   ],
@@ -57,7 +57,7 @@
   "provisioners": [
     {
       "source": "blobs/ConfigurationFile.ini",
-      "destination": "c:/users/vagrant",
+      "destination": "c:/users/vagrant/ConfigurationFile.ini",
       "type": "file"
     },
     {
