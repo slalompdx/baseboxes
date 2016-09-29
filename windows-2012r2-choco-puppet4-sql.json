@@ -63,8 +63,7 @@
     {
       "execute_command": "powershell \"& { {{.Path}}; exit $LastExitCode}\"",
       "inline": [
-        "$Destination = \"C:/users/vagrant/sqlserver_2012_ee_sp3.iso\"",
-        "Mount-DiskImage $Destination"
+        "Mount-DiskImage C:/users/vagrant/sqlserver_2012_ee_sp3.iso"
       ],
       "type": "powershell"
     },
