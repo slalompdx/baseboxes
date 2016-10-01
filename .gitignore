@@ -8,7 +8,7 @@ artifacts/*
 ext/
 packer_cache/*
 .bundle/*
-blobs/*
+blobs/*.iso
 packer--virtualbox/
 *.rpm
 *.iso
