@@ -1,6 +1,31 @@
 {
   "builders": [
     {
+      "type": "virtualbox-ovf",
+      "source_path": "./packer-rhel-7-rhn-virtualbox/packer-virtualbox-ovf.ovf",
+      "boot_wait": "10s",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ssh_pty": "true",
+      "http_directory": "http",
+      "output_directory": "packer-{{user `template`}}-virtualbox",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "480"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    },
+    {
       "type": "vmware-vmx",
       "source_path": "./packer-rhel-7-rhn-vmware/packer-vmware-vmx.vmx",
       "boot_wait": "10s",
