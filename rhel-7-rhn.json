@@ -18,6 +18,38 @@
         "ethernet0.virtualDev": "vmxnet3",
         "virtualHW.version": "11"
       }
+    },
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "./packer-rhel-7-virtualbox/packer-virtualbox-ovf.ovf",
+      "boot_wait": "10s",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ssh_pty": "true",
+      "http_directory": "http",
+      "output_directory": "packer-{{user `template`}}-virtualbox",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "480"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "keep_input_artifact": true,
+      "type": "vagrant"
     }
   ],
   "provisioners": [

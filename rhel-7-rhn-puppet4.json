@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "vmware-vmx",
-      "source_path": "./packer-rhel-7-vmware/packer-vmware-vmx.vmx",
+      "source_path": "./packer-rhel-7-rhn-vmware/packer-vmware-vmx.vmx",
       "boot_wait": "10s",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
@@ -33,7 +33,6 @@
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
-        "scripts/rhel/7/satellite.sh",
         "scripts/centos/7/puppet4.sh",
         "scripts/centos/tools.sh",
         "scripts/centos/7/cleanup-devtools.sh",
@@ -44,16 +43,16 @@
     }
   ],
   "variables": {
-    "box_basename": "rhel-7-puppet4",
+    "box_basename": "rhel-7-rhn-puppet4",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "DISABLE_RHN": "{{env `DISABLE_RHN`}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "name": "rhel-7-puppet4",
+    "name": "rhel-7-rhn-puppet4",
     "no_proxy": "{{env `no_proxy`}}",
-    "template": "rhel-7-puppet4",
+    "template": "rhel-7-rhn-puppet4",
     "version": "0.0.TIMESTAMP"
   }
 }
