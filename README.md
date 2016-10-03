@@ -55,3 +55,11 @@ WSUS Offline Updater can be downloaded [here](http://download.wsusoffline.net/).
 For more information on how to use the Offline Updater look [here](http://www.wsusoffline.net/docs/).
 
 Once the updates have been downloaded and the .ISO file created it is mounted as a separate DVD drive in VirtualBox. The updates are then applied from the local collection.
+
+== RHEL BOXES ==
+
+You need to set
+RHN_UNAME
+RHN_PW
+
+to your Red Hat network credentials prior to building the rhel-7-rhn build.
