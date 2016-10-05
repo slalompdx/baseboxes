@@ -22,7 +22,31 @@ vmware-iso|vmware-vmx)
     mkdir -p /tmp/vmfusion-archive;
     mount -o loop $HOME_DIR/linux.iso /tmp/vmfusion;
     tar xzf /tmp/vmfusion/VMwareTools-*.tar.gz -C /tmp/vmfusion-archive;
-    /tmp/vmfusion-archive/vmware-tools-distrib/vmware-install.pl --force-install;
+    yum -y install gcc kernel-devel;
+cat > /tmp/answer << __ANSWER__
+yes
+yes
+/usr/bin
+/etc/rc.d
+/etc/rc.d/init.d
+/usr/sbin
+/usr/lib/vmware-tools
+yes
+/usr/lib
+/var/lib
+/usr/share/doc/vmware-tools
+yes
+yes
+yes
+no
+no
+no
+yes
+no
+
+__ANSWER__
+    /tmp/vmfusion-archive/vmware-tools-distrib/vmware-install.pl < /tmp/answer;
+    sed -i '/answer AUTO_KMODS_ENABLED no/c\answer AUTO_KMODS_ENABLED yes' /etc/vmware-tools/locations
     umount /tmp/vmfusion;
     rm -rf  /tmp/vmfusion;
     rm -rf  /tmp/vmfusion-archive;
