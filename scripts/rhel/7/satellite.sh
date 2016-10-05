@@ -8,4 +8,5 @@ fi
 
 subscription-manager register --username $RHN_UNAME --password $RHN_PW
 subscription-manager attach
+subscription-manager repos --enable rhel-7-server-optional-rpms
 yum -y upgrade
