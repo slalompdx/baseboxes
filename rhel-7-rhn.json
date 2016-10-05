@@ -72,7 +72,6 @@
       "scripts": [
         "scripts/rhel/7/satellite.sh",
         "scripts/common/vmtools.sh",
-        "scripts/centos/7/cleanup-devtools.sh",
         "scripts/centos/7/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
