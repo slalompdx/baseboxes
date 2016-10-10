@@ -18,7 +18,7 @@ then
   subscription-manager attach
   subscription-manager repos --enable rhel-7-server-optional-rpms
   yum -y upgrade
-elif [ "${UPDATE_SOURCE}" == "satellite"]
+elif [ "${UPDATE_SOURCE}" == "satellite" ]
 then
   if [ -z "${SATELLITE_SERVER}" ] || [ -z "${SATELLITE_KEY}" ]
   then
