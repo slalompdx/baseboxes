@@ -66,7 +66,10 @@
         "https_proxy={{user `https_proxy`}}",
         "no_proxy={{user `no_proxy`}}",
         "RHN_UNAME={{user `rhn_uname`}}",
-        "RHN_PW={{user `rhn_pw`}}"
+        "RHN_PW={{user `rhn_pw`}}",
+        "SATELLITE_SERVER={{user `satellite_server`}}",
+        "SATELLITE_KEY={{user `satellite_key`}}",
+        "UPDATE_SOURCE={{user `update_source`}}"
       ],
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
       "scripts": [
@@ -81,7 +84,6 @@
   "variables": {
     "box_basename": "rhel-7-rhn",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
-    "DISABLE_RHN": "{{env `DISABLE_RHN`}}",
     "git_revision": "__unknown_git_revision__",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
@@ -90,7 +92,10 @@
     "no_proxy": "{{env `no_proxy`}}",
     "rhn_uname": "{{env `RHN_UNAME`}}",
     "rhn_pw": "{{env `RHN_PW`}}",
+    "satellite_server": "{{env `SATELLITE_SERVER`}}",
+    "satellite_key": "{{env `SATELLITE_KEY`}}",
     "template": "rhel-7-rhn",
+    "update_source": "{{env `UPDATE_SOURCE`}}",
     "version": "0.0.TIMESTAMP"
   }
 }
