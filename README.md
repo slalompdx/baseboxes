@@ -64,8 +64,22 @@ Once the updates have been downloaded and the .ISO file created it is mounted as
 
 == RHEL BOXES ==
 
-You need to set
+You can choose RHN or Satellite. By default the builder will choose RHN. You can override this setting with
+
+UPDATE_SOURCE
+
+which can be set to either "rhn" or "satellite."
+
+If you have set "rhn" the following two variables are used:
+
 RHN_UNAME
 RHN_PW
 
-to your Red Hat network credentials prior to building the rhel-7-rhn build.
+Set these to your Red Hat network credentials prior to building the rhel-7-rhn build.
+
+If you have set "satellite" you will need:
+
+SATELLITE_SERVER
+SATELLITE_KEY
+
+SERVER should be the FQDN of your satellite server, and KEY should be your activation key
