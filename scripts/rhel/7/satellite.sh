@@ -26,12 +26,13 @@ then
     exit 1
   fi
 
+  ESCAPED_SATELLITE_SERVER=`echo $SATELLITE_SERVER | sed -e 's/\./\\./g'`
   wget -O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT \
     "http://${SATELLITE_SERVER}/pub/RHN-ORG-TRUSTED-SSL-CERT"
 
   rpm -Uvh "http://${SATELLITE_SERVER}/pub/rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm"
 
-  sed -i -- 's/enter\.your\.server\.url\.here/pdxlrhssp001\.standard\.com/g' /etc/sysconfig/rhn/up2date
+  sed -i -- 's/enter\.your\.server\.url\.here/'"$ESCAPED_SATELLITE_SERVER"'/g' /etc/sysconfig/rhn/up2date
 
   sed -i -- 's/networkRetries=1/networkRetries=5/g' /etc/sysconfig/rhn/up2date
 
