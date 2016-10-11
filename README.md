@@ -46,6 +46,12 @@ BOX_BUILD - set to the name of a build to build only that box during rake spec
 BOX_OVERRIDE - set to true to have rake spec avoid building each box
 BOX_FORCE - rebuild packer box even if artifacts are present
 
+== Extra environment variables ==
+
+If you set the variable `P_USE_VAR_FILE` packer will be passed the option to use a var-file.  This var file can be populated with environment variables that are prefixed with `P_` by using the script `scripts/common/packer_variables.sh`
+
+This can then be used by vagrant or other builder processes to pass lots of variables into the packer build to set things such as the mirror location, iso checksum, etc.
+
 == WINDOWS BOXES ==
 
 In order to patch Windows offline the WSUS Offline Updater should be used to create an .ISO file of the available updates. A separate .ISO file should be made for each Operating System version by selecting "Create ISO image per selected product and language" option.
