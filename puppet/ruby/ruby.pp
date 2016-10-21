@@ -17,8 +17,21 @@ $orig_packageset =
   ]
 $homedir = '/home/vagrant'
 $package_root = 'ruby2'
-$version = '2.3.1'
-$release = '1'
+if $facts['ruby_version'] {
+  $version = $facts['ruby_version']
+} else {
+  $version = '2.3.1'
+}
+if $facts['ruby_release'] {
+  $release = $facts['ruby_release']
+} else {
+  $release = '1'
+}
+unless $version =~ /^(\d+\.)?(\d+\.)?(\*|\d+)$/ {
+  fail("${version} needs to be a valid semantic version.")
+}
+$version_array = split($version, '\.')
+$version_majmin = "${version_array[0]}.${version_array[1]}"
 
 if $facts['os']['release']['major'] == '7' {
   $packageset = $orig_packageset + 'compat-db47'
@@ -52,12 +65,12 @@ wget::fetch { 'Download spec file':
 } ->
 
 wget::fetch { 'Download Ruby bundle':
-  source => 'https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz',
-  destination => '/home/vagrant/rpmbuild/SOURCES/ruby-2.3.1.tar.gz',
+  source => "https://cache.ruby-lang.org/pub/ruby/${version_majmin}/ruby-${version}.tar.gz",
+  destination => "/home/vagrant/rpmbuild/SOURCES/ruby-${version}.tar.gz",
 } ->
 
 exec { 'build ruby rpm':
-  command => '/usr/bin/rpmbuild -ba --define "_topdir /home/vagrant/rpmbuild" /home/vagrant/rpmbuild/SPECS/ruby.spec',
+  command => "/usr/bin/rpmbuild -ba --define '_topdir /home/vagrant/rpmbuild' --define \"override_rubyver ${version}\" /home/vagrant/rpmbuild/SPECS/ruby.spec",
   user    => 'vagrant',
   cwd     => '/home/vagrant',
   creates => $packagename,
@@ -69,5 +82,5 @@ exec { 'install ruby rpm':
 } ->
 
 exec { 'install minimal gems':
-  command => '/usr/local/bin/gem install bundler rake serverspec',
+  command => '/usr/local/bin/gem install bundler serverspec',
 }

@@ -53,6 +53,7 @@
     },
     {
       "environment_vars": [
+        "FACTER_ruby_version=2.2.2",
         "HOME_DIR=/home/vagrant",
         "HTTP_PROXY={{user `HTTP_PROXY`}}",
         "HTTPS_PROXY={{user `HTTPS_PROXY`}}",
