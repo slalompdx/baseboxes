@@ -1,5 +1,4 @@
 require 'rake'
-require 'pty'
 require 'net/http'
 require 'open-uri'
 require 'rspec/core/rake_task'
