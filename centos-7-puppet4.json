@@ -49,6 +49,7 @@
   "provisioners": [
     {
       "environment_vars": [
+        "PUPPET_VERSION={{user `puppet_version`}}",
         "HOME_DIR=/home/vagrant",
         "HTTP_PROXY={{user `http_proxy`}}",
         "HTTPS_PROXY={{user `https_proxy`}}",
@@ -68,10 +69,11 @@
     }
   ],
   "variables": {
+    "puppet_version": "{{env `PUPPET_VERSION`}}",
     "box_basename": "centos-7-puppet4",
     "build_timestamp": "{{isotime \"20060102150403\"}}",
     "git_revision": "__unknown_git_revision__",
-    "headless": "",
+    "headless": "true",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
     "name": "centos-7-puppet4",

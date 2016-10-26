@@ -64,8 +64,34 @@ Once the updates have been downloaded and the .ISO file created it is mounted as
 
 == RHEL BOXES ==
 
-You need to set
+You can choose RHN or Satellite. By default the builder will choose RHN. You can override this setting with
+
+UPDATE_SOURCE
+
+which can be set to either "rhn" or "satellite."
+
+If you have set "rhn" the following two variables are used:
+
 RHN_UNAME
 RHN_PW
 
-to your Red Hat network credentials prior to building the rhel-7-rhn build.
+Set these to your Red Hat network credentials prior to building the rhel-7-rhn build.
+
+If you have set "satellite" you will need:
+
+SATELLITE_SERVER
+SATELLITE_KEY
+
+SERVER should be the FQDN of your satellite server, and KEY should be your activation key
+
+== Ruby versions ==
+
+When building the centos-7-puppet4-ruby build, use the RUBY_VERSION environment variable. Warning, not everything works the earlier you go! YMMV. 2.3.0 and above known working.
+
+NOTE: The version must be in x.y.z semver format.
+
+== Puppet versions ==
+
+When building the centos-7-puppet4 build, use the PUPPET_VERSION environment variable. This refers to the agent version - https://docs.puppet.com/puppet/latest/reference/about_agent.html
+
+NOTE: The version must be in x.y.z semver format.
