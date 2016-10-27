@@ -1,6 +1,16 @@
 # rubocop:disable Metrics/MethodLength
 # frozen_string_literal: false
 
+def fix_builder_format(builder, format)
+  real_format =
+    case (builder == 'vmware' && format == 'ovf')
+    when true  then 'vmx'
+    when false then format
+    end
+
+  "#{builder}-#{real_format}"
+end
+
 def build_packer_command(args = {})
   defaults = {
     builder: %w(vmware virtualbox),
@@ -16,23 +26,17 @@ def build_packer_command(args = {})
 
   actual = defaults.merge(args)
 
-  command = 'packer build'
-  command << ' -var-file=/tmp/packer-variables.json' if var_file
-  command << ' --force' if actual[:force]
-  command << " -var http_proxy=#{http_proxy}" if http_proxy
-  command << " -var https_proxy=#{https_proxy}" if https_proxy
-  command << " -var no_proxy=#{no_proxy}" if no_proxy
-  command << ' -only='
-  actual[:builder].each_with_index do |builder, index|
-    format =
-      if actual[:format] == 'ovf'
-        builder == 'vmware' ? 'vmx' : 'ovf'
-      else
-        actual[:format]
-      end
-    command << "#{builder}-#{format}"
-    command << ',' unless index == actual[:builder].size - 1
-  end
-  command << " #{actual[:box]}.json"
+  command = ['packer build']
+  command << '-var-file=/tmp/packer-variables.json' if var_file
+  command << '--force'                              if actual[:force]
+  command << "-var http_proxy=#{http_proxy}"        if http_proxy
+  command << "-var https_proxy=#{https_proxy}"      if https_proxy
+  command << "-var no_proxy=#{no_proxy}"            if no_proxy
+  command << '-only=' + actual[:builder].map do |builder|
+    fix_builder_format(builder, actual[:format])
+  end.join(',')
+  command << "#{actual[:box]}.json"
+
+  command.join(' ')
 end
 # rubocop:enable Metrics/MethodLength
