@@ -19,7 +19,6 @@ task :build do
     source = 'packer-vmware-vmx-{{timestamp}}'
   end
 
-  STDOUT.sync = true
   p cmd = build_packer_command(builder: builder, format: format, box: name)
   stream_output cmd
 
@@ -37,5 +36,4 @@ task :build do
       "packer-#{name}-virtualbox/packer-virtualbox-ovf.ovf"
     stream_output command
   end
-  STDOUT.sync = false
 end
