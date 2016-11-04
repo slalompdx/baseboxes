@@ -58,6 +58,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   pry
@@ -68,4 +69,4 @@ DEPENDENCIES
   serverspec
 
 BUNDLED WITH
-   1.12.5
+   1.13.6
