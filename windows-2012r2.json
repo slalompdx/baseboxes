@@ -82,6 +82,8 @@
         "./scripts/windows/enable-rdp.bat",
         "./scripts/windows/compile-dotnet-assemblies.bat",
         "./scripts/windows/disable-auto-logon.bat",
+        "./scripts/windows/sysprep.bat",
+        "./scripts/windows/clearlogs.bat",
         "./scripts/windows/compact.bat"
       ]
     }
