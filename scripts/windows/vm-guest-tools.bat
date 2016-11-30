@@ -1,10 +1,24 @@
+if [%1]==[] (
+  set TOOLSURL="http://softwareupdate.vmware.com/cds/vmw-desktop/ws/12.0.0/2985596/windows/packages/tools-windows.tar"
+) else (
+  set TOOLSURL="%1%"
+)
+
+if [%2]==[] (
+  echo "You must specify a builder type as the second argument"
+  exit /b 1
+) else (
+  set PACKER_BUILDER_TYPE=%2
+)
 if not exist "C:\Windows\Temp\7z920-x64.msi" (
     powershell -Command "(New-Object System.Net.WebClient).DownloadFile('http://www.7-zip.org/a/7z920-x64.msi', 'C:\Windows\Temp\7z920-x64.msi')" <NUL
 )
 msiexec /qb /i C:\Windows\Temp\7z920-x64.msi
 
 if "%PACKER_BUILDER_TYPE%" equ "vmware-iso" goto :vmware
+if "%PACKER_BUILDER_TYPE%" equ "vmware-vmx" goto :vmware
 if "%PACKER_BUILDER_TYPE%" equ "virtualbox-iso" goto :virtualbox
+if "%PACKER_BUILDER_TYPE%" equ "virtualbox-ovf" goto :virtualbox
 if "%PACKER_BUILDER_TYPE%" equ "parallels-iso" goto :parallels
 goto :done
 
@@ -15,7 +29,7 @@ if exist "C:\Users\vagrant\windows.iso" (
 )
 
 if not exist "C:\Windows\Temp\windows.iso" (
-    powershell -Command "(New-Object System.Net.WebClient).DownloadFile('http://softwareupdate.vmware.com/cds/vmw-desktop/ws/12.0.0/2985596/windows/packages/tools-windows.tar', 'C:\Windows\Temp\vmware-tools.tar')" <NUL
+    powershell -Command "(New-Object System.Net.WebClient).DownloadFile("%TOOLSURL%", 'C:\Windows\Temp\vmware-tools.tar')" <NUL
     cmd /c ""C:\Program Files\7-Zip\7z.exe" x C:\Windows\Temp\vmware-tools.tar -oC:\Windows\Temp"
     FOR /r "C:\Windows\Temp" %%a in (VMware-tools-windows-*.iso) DO REN "%%~a" "windows.iso"
     rd /S /Q "C:\Program Files (x86)\VMWare"

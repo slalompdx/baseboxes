@@ -1,0 +1,87 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-ovf",
+      "source_path": "./packer-rhel-7-rhn-puppet4-virtualbox/packer-virtualbox-ovf.ovf",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "http_directory": "http",
+      "output_directory": "packer-{{user `template`}}-virtualbox",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "480"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    },
+    {
+      "type": "vmware-vmx",
+      "source_path": "./packer-rhel-7-rhn-puppet4-vmware/packer-vmware-vmx.vmx",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+      "http_directory": "http",
+      "output_directory": "packer-{{user `template`}}-vmware",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "480",
+        "numvcpus": "1"
+      }
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "type": "vagrant",
+      "keep_input_artifact": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "puppet/ruby/ruby.pp",
+      "destination": "/tmp/ruby.pp"
+    },
+    {
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant",
+        "HTTP_PROXY={{user `HTTP_PROXY`}}",
+        "HTTPS_PROXY={{user `HTTPS_PROXY`}}",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "scripts": [
+        "scripts/centos/prereq.sh",
+        "scripts/centos/tools.sh",
+        "scripts/centos/7/ruby.sh",
+        "scripts/centos/7/cleanup-ruby.sh",
+        "scripts/centos/7/cleanup.sh",
+        "scripts/common/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "box_basename": "rhel-7-rhn-puppet4-ruby",
+    "build_timestamp": "{{isotime \"20060102150403\"}}",
+    "git_revision": "__unknown_git_revision__",
+    "headless": "",
+    "http_proxy": "{{env `http_proxy`}}",
+    "https_proxy": "{{env `https_proxy`}}",
+    "name": "rhel-7-rhn-puppet4-ruby",
+    "no_proxy": "{{env `no_proxy`}}",
+    "template": "rhel-7-rhn-puppet4-ruby",
+    "version": "0.0.TIMESTAMP"
+  }
+}

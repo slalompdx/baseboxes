@@ -4,7 +4,7 @@ Clone repo
 
 bundle install
 
-BASE_BUILD=rhel-7 be rake build
+BASE_BUILD=centos-7 bundle exec rake build
 
 == NOTE ON BOX NAMES ==
 
@@ -34,7 +34,6 @@ bundle exec rake winblob
 
 That command creates the blobs directory and downloads the updates ISO to that directory.
 
-
 == Proxies ==
 Call packer with -var and then http_proxy and https_proxy (and their capitalized counterparts if you like) to build boxes with proxies.
 
@@ -47,6 +46,12 @@ BOX_BUILD - set to the name of a build to build only that box during rake spec
 BOX_OVERRIDE - set to true to have rake spec avoid building each box
 BOX_FORCE - rebuild packer box even if artifacts are present
 
+== Extra environment variables ==
+
+If you set the variable `P_USE_VAR_FILE` packer will be passed the option to use a var-file.  This var file can be populated with environment variables that are prefixed with `P_` by using the script `scripts/common/packer_variables.sh`
+
+This can then be used by vagrant or other builder processes to pass lots of variables into the packer build to set things such as the mirror location, iso checksum, etc.
+
 == WINDOWS BOXES ==
 
 In order to patch Windows offline the WSUS Offline Updater should be used to create an .ISO file of the available updates. A separate .ISO file should be made for each Operating System version by selecting "Create ISO image per selected product and language" option.
@@ -56,3 +61,37 @@ WSUS Offline Updater can be downloaded [here](http://download.wsusoffline.net/).
 For more information on how to use the Offline Updater look [here](http://www.wsusoffline.net/docs/).
 
 Once the updates have been downloaded and the .ISO file created it is mounted as a separate DVD drive in VirtualBox. The updates are then applied from the local collection.
+
+== RHEL BOXES ==
+
+You can choose RHN or Satellite. By default the builder will choose RHN. You can override this setting with
+
+UPDATE_SOURCE
+
+which can be set to either "rhn" or "satellite."
+
+If you have set "rhn" the following two variables are used:
+
+RHN_UNAME
+RHN_PW
+
+Set these to your Red Hat network credentials prior to building the rhel-7-rhn build.
+
+If you have set "satellite" you will need:
+
+SATELLITE_SERVER
+SATELLITE_KEY
+
+SERVER should be the FQDN of your satellite server, and KEY should be your activation key
+
+== Ruby versions ==
+
+When building the centos-7-puppet4-ruby build, use the RUBY_VERSION environment variable. Warning, not everything works the earlier you go! YMMV. 2.3.0 and above known working.
+
+NOTE: The version must be in x.y.z semver format.
+
+== Puppet versions ==
+
+When building the centos-7-puppet4 build, use the PUPPET_VERSION environment variable. This refers to the agent version - https://docs.puppet.com/puppet/latest/reference/about_agent.html
+
+NOTE: The version must be in x.y.z semver format.

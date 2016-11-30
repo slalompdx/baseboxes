@@ -1,118 +1,122 @@
 {
   "builders": [
     {
+      "type": "vmware-iso",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "headless": false,
+      "boot_wait": "2m",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "6h",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "guest_os_type": "windows8srv-64",
+      "tools_upload_flavor": "windows",
+      "disk_size": 61440,
+      "vnc_port_min": 5900,
+      "vnc_port_max": 5980,
+      "output_directory": "packer-{{user `box_basename`}}-vmware",
+      "floppy_files": [
+        "{{user `autounattend`}}",
+        "./scripts/windows/microsoft-updates.bat",
+        "./scripts/windows/updates.ps1",
+        "./scripts/windows/openssh.ps1"
+      ],
+      "vm_name": "{{user `box_basename`}}",
+      "vmx_data": {
+        "RemoteDisplay.vnc.enabled": "false",
+        "RemoteDisplay.vnc.port": "5900",
+        "memsize": "2048",
+        "numvcpus": "2",
+        "scsi0.virtualDev": "lsisas1068",
+        "numvcpus": "2"
+      }
+    },
+    {
       "type": "virtualbox-iso",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "headless": "{{ user `headless` }}",
-      "boot_wait": "1m",
-      "communicator": "winrm",
-      "winrm_username": "vagrant",
-      "winrm_password": "vagrant",
-      "winrm_timeout": "8h",
-      "shutdown_command": "a:/PackerShutdown.bat",
-      "shutdown_timeout": "20m",
-      "output_directory": "packer-{{ user `template` }}-virtualbox",
+      "headless": false,
+      "boot_wait": "2m",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "6h",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "shutdown_timeout": "1h",
       "guest_os_type": "Windows2012_64",
-      "http_directory": "http",
+      "output_directory": "packer-{{user `box_basename`}}-virtualbox",
       "disk_size": 61440,
       "floppy_files": [
         "{{user `autounattend`}}",
-        "./scripts/windows/PackerShutdown.bat",
+        "./scripts/windows/microsoft-updates.bat",
         "./scripts/windows/updates.ps1",
-        "./scripts/windows/oracle-cert.cer",
-        "./scripts/windows/SetupComplete-2012.cmd",
-        "./scripts/windows/postunattend.xml",
-        "./scripts/windows/Test-Command.ps1",
-        "./scripts/windows/package.ps1"
+        "./scripts/windows/openssh.ps1",
+        "./scripts/windows/oracle-cert.cer"
       ],
+      "vm_name": "{{user `box_basename`}}",
       "vboxmanage": [
         [ "modifyvm", "{{.Name}}", "--natpf1", "guest_winrm,tcp,,55985,,5985" ],
         [ "modifyvm", "{{.Name}}", "--memory", "4096" ],
         [ "modifyvm", "{{.Name}}", "--vram", "48" ],
         [ "modifyvm", "{{.Name}}", "--cpus", "4" ],
         [ "modifyvm", "{{.Name}}", "--ioapic", "on" ],
-        [ "storagectl", "{{.Name}}", "--name", "SataController", "--add", "sata", "--controller", "IntelAHCI"],
-        [ "storageattach", "{{.Name}}", "--storagectl", "SataController", "--port", "0", "--device", "0", "--type", "dvddrive", "--medium", "./blobs/wsusoffline-w63-x64.iso"]
-      ],
-      "virtualbox_version_file": ".vbox_version",
-      "vm_name": "{{ user `template ` }}"
-    },
-    {
-      "type": "vmware-iso",
-      "boot_wait": "1m",
-      "disk_size": 61440,
-      "headless": "{{ user `headless` }}",
-      "http_directory": "http",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-      "iso_url": "{{user `iso_url`}}",
-      "output_directory": "packer-{{user `template`}}-vmware",
-      "shutdown_command": "a:/PackerShutdown.bat",
-      "communicator": "winrm",
-      "winrm_username": "vagrant",
-      "winrm_password": "vagrant",
-      "winrm_timeout": "8h",
-      "tools_upload_flavor": "windows",
-      "guest_os_type": "windows8srv-64",
-      "vm_name": "{{ user `template` }}",
-      "vmx_data": {
-        "memsize": "3072",
-        "numvcpus": "2",
-        "scsi0.virtualDev": "lsisas1068",
-        "ide1:1.present": "TRUE",
-        "ide1:1.devicetype": "cdrom-image",
-        "ide1:1.filename": "{{template_dir}}/blobs/wsusoffline-w63-x64.iso",
-        "ide1:1.startConnected": "TRUE"
-      },
-      "floppy_files": [
-        "{{user `autounattend`}}",
-        "./scripts/windows/PackerShutdown.bat",
-        "./scripts/windows/updates.ps1",
-        "./scripts/windows/oracle-cert.cer",
-        "./scripts/windows/SetupComplete-2012.cmd",
-        "./scripts/windows/postunattend.xml",
-        "./scripts/windows/Test-Command.ps1",
-        "./scripts/windows/package.ps1"
+        [ "storagectl", "{{.Name}}", "--name", "SataController", "--add", "sata", "--controller", "IntelAHCI"]
       ]
     }
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "./scripts/windows/NimbleFastReclaim.ps1",
+      "destination": "C:/Windows/Temp/NimbleFastReclaim.ps1"
+    },
+    {
       "type": "windows-shell",
-      "script": "./scripts/windows/vm-guest-tools.bat",
-      "pause_before": "5m"
+      "remote_path": "/tmp/script.bat",
+      "execute_command": "C:/Windows/Temp/script.bat {{user `tools_url`}} {{build_type}}",
+      "scripts": "./scripts/windows/vm-guest-tools.bat"
     },
     {
-      "type": "powershell",
-      "inline":
-        "./scripts/windows/setproxy.ps1 -proxy {{user `http_proxy`}} -no_proxy {{user `no_proxy`}}"
-    },
-    {
-      "type": "powershell",
-      "script":
-        "./scripts/windows/provision.ps1"
+      "type": "windows-shell",
+      "remote_path": "/tmp/script.bat",
+      "environment_vars": [
+        "TOOLSPATH={{user `tools_url`}}"
+      ],
+      "execute_command": "C:/Windows/Temp/script.bat",
+      "scripts": [
+        "./scripts/windows/vagrant-ssh.bat",
+        "./scripts/windows/enable-rdp.bat",
+        "./scripts/windows/compile-dotnet-assemblies.bat",
+        "./scripts/windows/disable-auto-logon.bat",
+        "./scripts/windows/sysprep.bat",
+        "./scripts/windows/clearlogs.bat",
+        "./scripts/windows/compact.bat"
+      ]
     }
   ],
   "post-processors": [
     {
       "type": "vagrant",
       "keep_input_artifact": true,
-      "output": "builds/{{ user `box_basename` }}.{{.Provider}}.box"
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "vagrantfile_template": "vagrant_templates/vagrantfile-windows_2012_r2.template"
     }
   ],
   "variables": {
-    "name": "windows-2012r2",
     "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "name": "windows-2012r2",
     "headless": "",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
     "no_proxy": "{{env `no_proxy`}}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
-    "iso_checksum_type": "sha1",
-    "iso_checksum": "849734f37346385dac2c101e4aacba4626bb141c",
     "template": "windows-2012r2",
-    "autounattend": "./answer_files/2012r2/Autounattend.xml"
+    "tools_url": "{{env `TOOLS_URL`}}",
+    "iso_url": "http://download.microsoft.com/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.16384.WINBLUE_RTM.130821-1623_X64FRE_SERVER_EVAL_EN-US-IRM_SSS_X64FREE_EN-US_DV5.ISO",
+    "iso_checksum_type": "md5",
+    "iso_checksum": "458ff91f8abc21b75cb544744bf92e6a",
+    "autounattend": "./answer_files/2012r2/Autounattend.xml",
+    "box_basename": "windows-2012r2"
   }
 }

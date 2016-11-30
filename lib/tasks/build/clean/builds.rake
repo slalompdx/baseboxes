@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :clean do
   desc 'Clean all builds'
   task :builds do

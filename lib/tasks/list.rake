@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 desc 'List images'
 task :list do
   list = {}

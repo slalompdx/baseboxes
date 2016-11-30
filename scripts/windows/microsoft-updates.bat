@@ -1,4 +1,3 @@
-
 net stop wuauserv
 
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v EnableFeaturedSoftware /t REG_DWORD /d 1 /f
@@ -11,5 +10,4 @@ echo Set NewUpdateService = ServiceManager.AddService2("7971f918-a847-4430-9279-
 cscript A:\temp.vbs
 
 net start wuauserv
-
 e:/Update.cmd /updatecpp /instdotnet4

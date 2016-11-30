@@ -1,0 +1,79 @@
+{
+  "builders": [
+    {
+      "name": "vmware-esxi",
+      "vm_name": "vmware-esxi",
+      "vmdk_name": "vmware-esxi-disk0",
+      "type": "vmware-iso",
+      "headless": false,
+      "disk_size": "{{ user `disk_size` }}",
+      "disk_type_id": 0,
+      "guest_os_type": "vmkernel5",
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_file`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{ user `iso_checksum_type` }}",
+      "ssh_username": "root",
+      "ssh_password": "{{user `root_password`}}",
+      "ssh_wait_timeout": "60m",
+      "shutdown_command": "esxcli system maintenanceMode set -e true -t 0 ; esxcli system shutdown poweroff -d 10 -r 'Packer Shutdown' ; esxcli system maintenanceMode set -e false -t 0",
+      "http_directory": "http",
+      "boot_wait": "5s",
+      "version": 11,
+      "vmx_data": {
+        "memsize": "4096",
+        "numvcpus": "2",
+        "ethernet0.virtualDev": "vmxnet3",
+        "vhv.enable": "TRUE"
+      },
+      "boot_command": [
+        "<enter><wait>O<wait> ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/esxi-kickstart.cfg<enter>"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "scripts/esxi/download-pubkey.sh"
+    },
+    {
+      "type": "file",
+      "source": "http/vagrant.pub",
+      "destination": "/etc/ssh/keys-root/authorized_keys"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/esxi/esxi-settings.sh",
+        "scripts/esxi/esxi-vmware-tools_install.sh",
+        "scripts/esxi/esxi-esxui_install.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "scripts/esxi/esxi-vnic-fix.sh",
+      "destination": "/etc/rc.local.d/local.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/esxi/esxi-cloning_configuration.sh"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": 9,
+        "vagrantfile_template": "scripts/esxi/esxi-vagrantfile_template.rb"
+      }
+    ]
+  ],
+  "variables": {
+    "iso_file": "VMware-VMvisor-Installer-6.0.0.update02-3620759.x86_64.iso",
+    "mirror": "https://s3-us-west-2.amazonaws.com",
+    "mirror_directory": "slalompdx/ISO/Vmware",
+    "iso_checksum": "5a93f457980d18f7061c8b550c509682070cadc7",
+    "iso_checksum_type": "sha1",
+    "disk_size": "200960",
+    "root_password": "vagrant"
+  }
+}

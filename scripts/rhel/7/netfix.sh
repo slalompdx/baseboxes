@@ -15,4 +15,3 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 cat > /etc/grub.d/40_custom <<EOH
 net.ifnames=0
 biosdevname=0
-EOH

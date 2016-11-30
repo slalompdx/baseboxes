@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :ensure do
   desc 'Ensure fixtures directory'
   task 'fixtures' do

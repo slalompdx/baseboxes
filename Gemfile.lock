@@ -58,13 +58,15 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   pry
   rake
   rspec
   rubocop
+  ruby-progressbar
   serverspec
 
 BUNDLED WITH
-   1.12.5
+   1.13.6
