@@ -15,6 +15,12 @@ end
 RSpec::Core::RakeTask.new(:spec)
 Dir.glob('./lib/tasks/**/*.rake').each { |r| import r }
 
+def list_templates(dir = '.')
+  Dir.glob(File.join(dir, '*.json')).map do |path|
+    path.gsub(/(^\.\/|\.json$)/, '')
+  end
+end
+
 def ary_to_regexp(ary)
   Regexp.new('(' + ary.join('|') + ')')
 end
@@ -37,7 +43,7 @@ namespace :vagrant do
   desc 'package a build in to a box'
   task :add, [:build] do |_t, args|
     build    = args.build
-    provider = ENV['VAGRANT_DEFAULT_PROVIDER'] || 'virtualbox'
+    provider = ENV['BUILDER'] || 'virtualbox'
 
     sh "vagrant box add -f builds/#{build}.#{provider}.box --name #{build}"
   end
@@ -56,14 +62,19 @@ namespace :vagrant do
 end
 
 namespace :spec do
-  desc 'run acceptance tests'
-  task :acceptance, [:build] do |_t, args|
-    Rake::Task['vagrant:add'].invoke(args.build)
-    Rake::Task['vagrant:up'].invoke(args.build)
+  namespace :acceptance do
+    list_templates.each do |template|
+      RSpec::Core::RakeTask.new(template.to_sym) do |t|
+        Rake::Task['vagrant:add'].invoke(template)
+        Rake::Task['vagrant:up'].invoke(template)
 
-    base, layers = tokenize_build(args.build).values_at(:base, :layers)
-    tests = layers.empty? ? base : [base, layers].flatten
+        ENV['TARGET_HOST'] = 'default'
 
-    sh "rspec -P spec/acceptance/{#{tests}}/*_spec.rb"
+        base, layers = tokenize_build(template).values_at(:base, :layers)
+        tests = layers.empty? ? base : [base, layers].flatten
+
+        t.pattern = "spec/acceptance/{#{tests}}/*_spec.rb"
+      end
+    end
   end
 end
