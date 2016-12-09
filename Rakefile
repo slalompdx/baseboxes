@@ -17,7 +17,7 @@ Dir.glob('./lib/tasks/**/*.rake').each { |r| import r }
 
 def list_templates(dir = '.')
   Dir.glob(File.join(dir, '*.json')).map do |path|
-    path.gsub(/(^\.\/|\.json$)/, '')
+    path.gsub(%r(^#{dir}/|\.json$), '')
   end
 end
 
@@ -36,7 +36,7 @@ def tokenize_build(name)
 
   layers = name.gsub(base[1], '').split('-').reject(&:empty?)
 
-  { base: base, layers: layers }
+  { base: base[1], layers: layers }
 end
 
 namespace :vagrant do
@@ -71,9 +71,9 @@ namespace :spec do
         ENV['TARGET_HOST'] = 'default'
 
         base, layers = tokenize_build(template).values_at(:base, :layers)
-        tests = layers.empty? ? base : [base, layers].flatten
+        tests = layers.empty? ? [base] : [base, layers].flatten
 
-        t.pattern = "spec/acceptance/{#{tests}}/*_spec.rb"
+        t.pattern = "spec/acceptance/{#{tests.join(',')}}/*_spec.rb"
       end
     end
   end
