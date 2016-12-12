@@ -32,7 +32,7 @@ describe file('/home/vagrant') {
 
 describe file ('/etc/redhat-release') do
   it { should be_file }
-  its(:content) { should match /Red Hat Enterprise Linux Server release 7.0 (Maipo)/ }
+  its(:content) { should match /CentOS Linux release 7.2/ }
 end
 
 describe file ('/etc/ssh/sshd_config') do

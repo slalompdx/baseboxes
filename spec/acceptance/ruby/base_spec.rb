@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-$orig_packages =
+$ruby_packages =
   [
     'rpmdevtools',
     'glibc-devel',
@@ -14,5 +14,17 @@ $orig_packages =
     'make',
     'gcc',
     'unzip',
-    'byacc'
+    'byacc',
+    'ruby2'
   ]
+
+$ruby_packages.each do |p|
+  describe package(p) do
+    it { should be_installed }
+  end
+end
+
+describe command ('gem list') do
+  its(:stdout) { should match /serverspec/ }
+  its(:stdout) { should match /bundler/ }
+end
