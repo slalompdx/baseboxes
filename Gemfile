@@ -1,9 +1,10 @@
 # A sample Gemfile
 source 'https://rubygems.org'
 
-gem 'rake'
-gem 'rubocop'
-gem 'rspec'
-gem 'serverspec'
+gem 'danger'
 gem 'pry'
+gem 'rake'
+gem 'rspec'
+gem 'rubocop'
 gem 'ruby-progressbar'
+gem 'serverspec'
