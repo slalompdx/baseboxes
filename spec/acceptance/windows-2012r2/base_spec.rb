@@ -4,39 +4,35 @@ describe command('Get-ExecutionPolicy') do
   its(:stdout) { should match /RemoteSigned/ }
 end
 
-describe command('REG QUERY HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\
-') do
-  its(:stdout) { should match /HideFileExt\s*REG_DWORD\s*0x0/ }
+describe windows_registry_key('HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced') do
+  it { should have_property('HideFileExt', :type_dword, '0') }
+  it { should have_property('Start_ShowRun', :type_dword, '1') }
+  it { should have_property('StartMenuAdminTools', :type_dword, '1')}
 end
 
-describe command('REG QUERY HKCU\Console') do
-  its(:stdout) { should match /QuickEdit\s*REG_DWORD\s*0x1/ }
+describe windows_registry_key('HKCU\Console') do
+  it { should have_property('QuickEdit', :type_dword, '1') }
 end
 
-describe command('REG QUERY HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced') do
-  its(:stdout) { should match /Start_ShowRun\s*REG_DWORD\s*0x1/ }
-  its(:stdout) { should match /StartMenuAdminTools\s*REG_DWORD\s*0x1/ }
+describe windows_registry_key('HKLM\SYSTEM\CurrentControlSet\Control\Power') do
+  it { should have_property('HibernateFileSizePercent', :type_dword, '0') }
+  it { should have_property('HibernateEnabled', :type_dword, '0') }
 end
 
-describe command('REG QUERY HKLM\SYSTEM\CurrentControlSet\Control\Power') do
-  its(:stdout) { should match /HibernateFileSizePercent\s*REG_DWORD\s*0x0/ }
-  its(:stdout) { should match /HibernateEnabled\s*REG_DWORD\s*0x0/ }
+describe windows_registry_key('HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server') do
+  it { should have_property('fDenyTSConnections', :type_dword, '0') }
 end
 
-describe command('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections') do
-  its(:stdout) { should match /fDenyTSConnections\s*REG_DWORD\s*0x0/ }
-end
-
-describe command('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"') do
-  its(:stdout) { should match /Start_ShowRun\s*REG_DWORD\s*0x1/ }
-  its(:stdout) { should match /AutoAdminLogon\s*REG_DWORD\s*0x0/ }
+describe windows_registry_key('HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon') do
+  it { should have_property('Start_ShowRun', :type_dword, '1') }
+  it { should have_property('AutoAdminLogon', :type_dword, '0') }
 end
 
 describe command ('netsh advfirewall firewall show rule name="Open Port 3389"') do
   its(:stdout) { should match /Direction:\s*In/ }
   its(:stdout) { should match /Action:\s*Allow/ }
   its(:stdout) { should match /Protocol:\s*TCP/ }
-   its(:stdout) { should match /LocalPort:\s*3389/ }
+  its(:stdout) { should match /LocalPort:\s*3389/ }
 end
 
 describe service('OpenSSHd') do
