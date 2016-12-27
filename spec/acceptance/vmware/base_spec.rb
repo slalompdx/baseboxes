@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'acceptance_spec_helper'
 
 $req_packages = [
   'libXinerama',

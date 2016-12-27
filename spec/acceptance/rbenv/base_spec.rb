@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'acceptance_spec_helper'
 
 if os['release'] =~ /^7\./
   $ver = '2.3.1'

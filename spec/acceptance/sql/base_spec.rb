@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'acceptance_spec_helper'
 
 describe service('SQL Server (MSSQLSERVER)') do
   it { should be_enabled }

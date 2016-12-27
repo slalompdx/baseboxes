@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'acceptance_spec_helper'
 
 describe command('Get-ExecutionPolicy') do
   its(:stdout) { should match /RemoteSigned/ }

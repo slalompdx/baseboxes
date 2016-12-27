@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'acceptance_spec_helper'
 
 describe file('/etc/ssh/keys-root/authorized_keys') do
   it { should be_file }

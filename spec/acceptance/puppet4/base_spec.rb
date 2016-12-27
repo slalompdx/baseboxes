@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'acceptance_spec_helper'
 
 describe package ('puppet-agent'), :if => os[:osfamily] == 'redhat' do
   it { should be_installed }

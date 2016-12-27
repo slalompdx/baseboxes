@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'acceptance_spec_helper'
 
 describe file ('/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT') do
   it { should be_file }
