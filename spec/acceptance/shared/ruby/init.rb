@@ -1,4 +1,4 @@
-shared_examples 'database::init' do
+shared_examples 'ruby::init' do
   $ruby_packages =
     [
       'rpmdevtools',
