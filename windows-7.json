@@ -7,80 +7,48 @@
       "iso_checksum": "{{user `iso_checksum`}}",
       "headless": "{{ user `headless` }}",
       "boot_wait": "2m",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "ssh_wait_timeout": "8h",
-      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "communicator": "winrm",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_timeout": "8h",
+      "shutdown_command": "a:/PackerShutdown.bat",
+      "shutdown_timeout": "20m",
       "output_directory": "packer-{{ user `template` }}-virtualbox",
       "guest_os_type": "Windows7_64",
       "http_directory": "blobs/client",
       "disk_size": 61440,
       "floppy_files": [
         "{{user `autounattend`}}",
-        "./scripts/windows/dis-updates.ps1",
-        "./scripts/windows/hotfix-KB3102810.bat",
-        "./scripts/windows/openssh.ps1",
-        "./scripts/windows/oracle-cert.cer"
+        "./scripts/windows/PackerShutdown.bat",
+        "./scripts/windows/updates.ps1",
+        "./scripts/windows/oracle-cert.cer",
+        "./scripts/windows/SetupComplete-2012.cmd",
+        "./scripts/windows/postunattend.xml",
+        "./scripts/windows/Test-Command.ps1",
+        "./scripts/windows/package.ps1",
+        "./scripts/windows/hotfix-KB3102810.bat"
       ],
       "vboxmanage": [
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-          "2048"
-        ],
-        [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-          "2"
-        ],
-        [
-          "storagectl",
-          "{{.Name}}",
-          "--name",
-          "SataController",
-          "--add",
-          "sata",
-          "--controller",
-          "IntelAHCI"
-        ],
-        [
-          "storageattach",
-          "{{.Name}}",
-          "--storagectl",
-          "SataController",
-          "--port",
-          "0",
-          "--device",
-          "0",
-          "--type",
-          "dvddrive",
-          "--medium",
-          "./blobs/win7_updates.iso"
-        ]
+        [ "modifyvm", "{{.Name}}", "--natpf1", "guest_winrm,tcp,,55985,,5985" ],
+        [ "modifyvm", "{{.Name}}", "--memory", "4096" ],
+        [ "modifyvm", "{{.Name}}", "--vram", "48" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "2" ],
+        [ "modifyvm", "{{.Name}}", "--ioapic", "on" ],
+        [ "storagectl", "{{.Name}}", "--name", "SataController", "--add", "sata", "--controller", "IntelAHCI"],
+        [ "storageattach", "{{.Name}}", "--storagectl", "SataController", "--port", "0", "--device", "0", "--type", "dvddrive", "--medium", "./blobs/wsusoffline-w61-x64.iso"]
       ],
       "vm_name": "{{ user `template ` }}"
     }
   ],
   "provisioners": [
     {
-      "type": "file",
-      "source": "blobs/win7_updates.zip",
-      "destination": "C:/Temp/win7_updates"
-  },
+      "type": "windows-shell",
+      "script": "./scripts/windows/vm-guest-tools.bat",
+      "pause_before": "5m"
+    },
     {
-      "type": "shell",
-      "remote_path": "/tmp/script.bat",
-      "execute_command": "{{.Vars}} cmd /c C:/Windows/Temp/script.bat",
-      "scripts": [
-        "./scripts/windows/vm-guest-tools.bat",
-        "./scripts/windows/vagrant-ssh.bat",
-        "./scripts/windows/disable-auto-logon.bat",
-        "./scripts/windows/enable-rdp.bat",
-        "./scripts/windows/compile-dotnet-assemblies.bat",
-        "./scripts/windows/compact.bat"
-      ]
+      "type": "powershell",
+      "script": "./scripts/windows/provision.ps1"
     }
   ],
   "post-processors": [
@@ -93,14 +61,13 @@
   ],
   "variables": {
     "box_basename": "windows-7",
-    "headless": "",
+    "headless": "true",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
     "no_proxy": "{{env `no_proxy`}}",
     "iso_url": "http://care.dlservice.microsoft.com/dl/download/evalx/win7/x64/EN/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso",
     "iso_checksum_type": "md5",
     "iso_checksum": "1d0d239a252cb53e466d39e752b17c28",
-    "autounattend": "./answer_files/7/Autounattend.xml",
-    "template": "windows-7"
+    "autounattend": "./answer_files/7/Autounattend.xml"
   }
 }
