@@ -8,6 +8,7 @@ GEM
     log4r (1.1.10)
     method_source (0.8.2)
     multi_json (1.12.1)
+    nenv (0.3.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
@@ -67,6 +68,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
+  nenv
   pry
   racker
   rake

@@ -2,6 +2,7 @@
 source 'https://rubygems.org'
 
 gem 'dotenv'
+gem 'nenv'
 gem 'racker'
 gem 'rake'
 gem 'rubocop'
