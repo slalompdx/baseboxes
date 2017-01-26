@@ -1,0 +1,96 @@
+{
+  "variables": {
+    "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
+    "build_timestamp": "{{isotime \"20060102150405\"}}",
+    "git_revision": "__unknown_git_revision__",
+    "version": "2.1.TIMESTAMP"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `ks_path`}}<enter><wait>"
+      ],
+      "floppy_files": [
+        "http/centos-7/ks.cfg"
+      ],
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_os_type": "RedHat_64",
+      "hard_drive_interface": "sata",
+      "output_directory": "packer-{{user `box_basename`}}-virtualbox",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "480"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "{{ user `box_basename` }}",
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
+      "name": "virtualbox-vagrant"
+    },
+    {
+      "type": "vmware-iso",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{user `ks_path`}}<enter><wait>"
+      ],
+      "floppy_files": [
+        "http/centos-7/ks.cfg"
+      ],
+      "guest_os_type": "centos-64",
+      "output_directory": "packer-{{user `box_basename`}}-vmware",
+      "tools_upload_flavor": "linux",
+      "vm_name": "{{ user `box_basename` }}",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "memsize": "480",
+        "numvcpus": "1"
+      },
+      "vnc_port_min": 5900,
+      "vnc_port_max": 5910,
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
+      "name": "vmware-vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "{{user `metadata`}}",
+      "destination": "/tmp/bento-metadata.json"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "HOME_DIR=/home/vagrant",
+        "http_proxy={{user `http_proxy`}}",
+        "https_proxy={{user `https_proxy`}}",
+        "no_proxy={{user `no_proxy`}}"
+      ],
+      "execute_command": "echo \"vagrant\" | {{.Vars}} sudo -S -E sh -eux \"{{.Path}}\"",
+      "scripts": [
+        "scripts/common/metadata.sh",
+        "scripts/common/sshd.sh",
+        "scripts/centos/networking.sh",
+        "scripts/common/vagrant.sh",
+        "scripts/common/vmtools.sh",
+        "scripts/centos/7/cleanup.sh",
+        "scripts/common/minimize.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "builds/{{user `box_basename`}}.{{.Provider}}.box",
+      "keep_input_artifact": true
+    }
+  ]
+}

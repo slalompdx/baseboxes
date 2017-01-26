@@ -1,3 +1,4 @@
+require 'dotenv/tasks'
 require 'rake'
 require 'net/http'
 require 'open-uri'
