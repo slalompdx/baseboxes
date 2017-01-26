@@ -33,7 +33,7 @@ env_packer_vars = {
 
 Racker::Processor.register_template do |t|
   # Define variables
-  t.variables = packer_vars.merge(env_pv)
+  t.variables = packer_vars.merge(env_packer_vars)
 
   # Define the builders
   t.builders['virtualbox-vagrant'] = {
