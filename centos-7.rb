@@ -2,7 +2,7 @@ require 'dotenv/load'
 require 'nenv'
 Dotenv.load('default.env', 'centos-7.env')
 
-pv = {
+packer_vars = {
   'boot_wait'         => Nenv.boot_wait,
   'disk_size'         => Nenv.disk_size,
   'headless'          => Nenv.headless,
@@ -16,7 +16,7 @@ pv = {
   'ssh_username'      => Nenv.ssh_username,
   'ssh_wait_timeout'  => Nenv.ssh_wait_timeout,
 }
-env_pv = {
+env_packer_vars = {
   'box_basename'      => Nenv.box_basename,
   'build_timestamp'   => '{{isotime "20060102150405"}}',
   'git_revision'      => '__unknown_git_revision__',
@@ -33,7 +33,7 @@ env_pv = {
 
 Racker::Processor.register_template do |t|
   # Define variables
-  t.variables = pv.merge(env_pv)
+  t.variables = packer_vars.merge(env_pv)
 
   # Define the builders
   t.builders['virtualbox-vagrant'] = {
@@ -54,7 +54,7 @@ Racker::Processor.register_template do |t|
     },
     'virtualbox_version_file' => '.vbox_version',
     'vm_name'                 => '{{ user `box_basename` }}'
-  }.merge(pv)
+  }.merge(packer_vars)
 
   t.builders['vmware-vagrant'] = {
     'type' => 'vmware-iso',
@@ -75,7 +75,7 @@ Racker::Processor.register_template do |t|
     },
     'vnc_port_min' => 5900,
     'vnc_port_max' => 5910
-  }.merge(pv)
+  }.merge(packer_vars)
 
   t.provisioners = {
     0 => {
