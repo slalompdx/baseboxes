@@ -156,7 +156,7 @@
         "scripts/centos/networking.sh",
         "scripts/common/vagrant.sh",
         "scripts/common/vmtools.sh",
-        "scripts/centos/7/cleanup.sh",
+        "scripts/common/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"
@@ -182,4 +182,3 @@
     "version": "3.1.TIMESTAMP"
   }
 }
-

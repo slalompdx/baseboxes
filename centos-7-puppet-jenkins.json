@@ -50,7 +50,7 @@
       "scripts": [
         "scripts/centos/jenkins_prereq.sh",
         "scripts/common/jenkins.sh",
-        "scripts/centos/7/cleanup.sh",
+        "scripts/common/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"
