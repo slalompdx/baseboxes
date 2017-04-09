@@ -9,6 +9,7 @@ ext/
 packer_cache/*
 .bundle/*
 blobs/*.iso
-packer--virtualbox/
 *.rpm
 *.iso
+builds/*
+.envrc
