@@ -75,7 +75,7 @@
       "scripts": [
         "scripts/rhel/7/satellite.sh",
         "scripts/common/vmtools.sh",
-        "scripts/centos/7/cleanup.sh",
+        "scripts/common/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"

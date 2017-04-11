@@ -18,6 +18,7 @@ virtualbox-iso|virtualbox-ovf)
     ;;
 
 vmware-iso|vmware-vmx)
+    yum remove -y open-vm-tools
     mkdir -p /tmp/vmfusion;
     mkdir -p /tmp/vmfusion-archive;
     mount -o loop $HOME_DIR/linux.iso /tmp/vmfusion;

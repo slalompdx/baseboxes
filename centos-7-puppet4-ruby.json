@@ -67,7 +67,7 @@
         "scripts/centos/tools.sh",
         "scripts/centos/7/ruby.sh",
         "scripts/centos/7/cleanup-ruby.sh",
-        "scripts/centos/7/cleanup.sh",
+        "scripts/common/cleanup.sh",
         "scripts/common/minimize.sh"
       ],
       "type": "shell"
